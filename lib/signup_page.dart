@@ -36,9 +36,10 @@ class _SignUpPageState extends State<SignUpPage> {
       password: password,
     );
 
-    // Print UserData object for now
-    print(userData);
+    // Print UserData object
+    userData.printData();
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -51,6 +52,7 @@ class _SignUpPageState extends State<SignUpPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+
             TextFormField(
               controller: nameController,
               decoration: InputDecoration(
@@ -101,24 +103,38 @@ class _SignUpPageState extends State<SignUpPage> {
               obscureText: true,
               style: TextStyle(color: AppTheme.themeData.primaryColor),
             ),
-            SizedBox(height: 20.0),
-            ElevatedButton(
-              onPressed: handleSignup,
-              child: Text('Signup'),
-              style: ElevatedButton.styleFrom(
-                primary: AppTheme.themeData.primaryColor,
+            SizedBox(height: 36.0),
+            Center(
+              child: ElevatedButton(
+                onPressed: handleSignup,
+                child: Text('Signup'),
+                style: ElevatedButton.styleFrom(
+                  primary: AppTheme.themeData.primaryColor,
+                ),
               ),
             ),
-            SizedBox(height: 20.0),
-            TextButton(
-              onPressed: () {
-                // Navigate to login page
-                Navigator.pop(context);
-              },
-              child: Text(
-                'Already have an account? Login',
-                style: TextStyle(color: AppTheme.themeData.primaryColor),
-              ),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Already have an account?',
+                  style: Theme.of(context).textTheme.button!.copyWith(
+                    color: Theme.of(context).primaryColor,
+                    fontWeight: FontWeight.normal,
+                  ),
+                ),
+                TextButton(
+                  onPressed: () {
+                    // Navigate to login page
+                    Navigator.pop(context);
+                  },
+                  child: Text(
+                    'Login',
+                    style: TextStyle(color: AppTheme.themeData.primaryColor),
+                  ),
+                ),
+              ],
             ),
           ],
         ),

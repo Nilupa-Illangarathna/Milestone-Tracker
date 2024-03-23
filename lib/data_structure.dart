@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class UserData {
   final String name;
   final int age;
@@ -14,4 +16,13 @@ class UserData {
     required this.email,
     required this.password,
   });
+
+  void printData() {
+    print('Name: $name');
+    print('Age: $age');
+    print('Married: $married');
+    print('Username: $username');
+    print('Email: $email');
+    print('Password: $password');
+  }
 }
