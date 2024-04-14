@@ -1,0 +1,267 @@
+{
+  "info": {
+    "_postman_id": "YOUR_POSTMAN_COLLECTION_ID",
+    "name": "Your Collection Name",
+    "description": "Collection containing API requests for authentication and password reset.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Login",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"username\": \"your_username\", \"password\": \"your_password\"}"
+        },
+        "url": {
+          "raw": "http://localhost:3500/login",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3500",
+          "path": [
+            "login"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "Success",
+          "_postman_previewlanguage": "json",
+          "status": "200",
+          "code": 200,
+          "header": [],
+          "body": "{}"
+        },
+        {
+          "name": "Invalid Credentials",
+          "_postman_previewlanguage": "json",
+          "status": "401",
+          "code": 401,
+          "header": [],
+          "body": "{\"success\": false, \"message\": \"Invalid username or password\"}"
+        }
+      ]
+    },
+    {
+      "name": "Send OTP",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"method\": \"email\", \"contact\": \"test@example.com\", \"isNumericOTP\": true, \"otpDigitCount\": 4, \"otpCountdownTime\": 15}"
+        },
+        "url": {
+          "raw": "http://localhost:3500/send_otp",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3500",
+          "path": [
+            "send_otp"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "Success",
+          "_postman_previewlanguage": "json",
+          "status": "200",
+          "code": 200,
+          "header": [],
+          "body": "{\"success\": true, \"message\": \"OTP sent successfully\"}"
+        },
+        {
+          "name": "Failure",
+          "_postman_previewlanguage": "json",
+          "status": "500",
+          "code": 500,
+          "header": [],
+          "body": "{\"success\": false, \"message\": \"An error occurred. Please try again later.\"}"
+        }
+      ]
+    },
+    {
+      "name": "Verify OTP",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"method\": \"email\", \"contact\": \"test@example.com\", \"otp\": \"1234\"}"
+        },
+        "url": {
+          "raw": "http://localhost:3500/verify_otp",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3500",
+          "path": [
+            "verify_otp"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "Success",
+          "_postman_previewlanguage": "json",
+          "status": "200",
+          "code": 200,
+          "header": [],
+          "body": "{\"success\": true, \"message\": \"OTP verification successful\"}"
+        },
+        {
+          "name": "Incorrect OTP",
+          "_postman_previewlanguage": "json",
+          "status": "401",
+          "code": 401,
+          "header": [],
+          "body": "{\"success\": false, \"message\": \"Incorrect OTP\"}"
+        },
+        {
+          "name": "OTP data not found",
+          "_postman_previewlanguage": "json",
+          "status": "404",
+          "code": 404,
+          "header": [],
+          "body": "{\"success\": false, \"message\": \"OTP data not found\"}"
+        },
+        {
+          "name": "Failure",
+          "_postman_previewlanguage": "json",
+          "status": "500",
+          "code": 500,
+          "header": [],
+          "body": "{\"success\": false, \"message\": \"An error occurred. Please try again later.\"}"
+        }
+      ]
+    },
+    {
+      "name": "Reset Password",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"method\": \"email\", \"contact\": \"test@example.com\", \"password\": \"newPassword123\"}"
+        },
+        "url": {
+          "raw": "http://localhost:3500/reset_password",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3500",
+          "path": [
+            "reset_password"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "Success",
+          "_postman_previewlanguage": "json",
+          "status": "200",
+          "code": 200,
+          "header": [],
+          "body": "{\"success\": true, \"message\": \"Password reset successful\"}"
+        },
+        {
+          "name": "User not found",
+          "_postman_previewlanguage": "json",
+          "status": "404",
+          "code": 404,
+          "header": [],
+          "body": "{\"success\": false, \"message\": \"User not found\"}"
+        },
+        {
+          "name": "Failure",
+          "_postman_previewlanguage": "json",
+          "status": "500",
+          "code": 500,
+          "header": [],
+          "body": "{\"success\": false, \"message\": \"An error occurred. Please try again later.\"}"
+        }
+      ]
+    },
+    {
+      "name": "Signup",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"name\": \"name\", \"email\": \"email\", \"mobile\": \"contact_no\", \"password\": \"entered password\"}"
+        },
+        "url": {
+          "raw": "http://localhost:3500/signup",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3500",
+          "path": [
+            "signup"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "Success",
+          "_postman_previewlanguage": "json",
+          "status": "200",
+          "code": 200,
+          "header": [],
+          "body": "{\"success\": true, \"message\": \"Signup successful\", \"data\": \"id\"}"
+        },
+        {
+          "name": "Invalid Data",
+          "_postman_previewlanguage": "json",
+          "status": "400",
+          "code": 400,
+          "header": [],
+          "body": "{\"success\": false, \"message\": \"Username or email already exists\"}"
+        },
+        {
+          "name": "Server Error",
+          "_postman_previewlanguage": "json",
+          "status": "500",
+          "code": 500,
+          "header": [],
+          "body": "{\"success\": false, \"message\": \"Failed to create user\"}"
+        }
+      ]
+    }
+  ]
+}
