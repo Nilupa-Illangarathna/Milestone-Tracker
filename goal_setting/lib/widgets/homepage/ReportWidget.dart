@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 
 import '../../data_classes/sub classes/report_class.dart';
 import '../../data_classes/sub classes/task_class.dart';
+import '../Charts/chart.dart';
 
 class ReportWidget extends StatelessWidget {
   final Report report;
@@ -76,7 +77,25 @@ class ReportWidget extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Statistics: ${report.statistics}'),
+                SizedBox(height:64),
+                Center(
+                  child: Container(
+                    width: 200,
+                    height: 80,
+                    child: Center(
+                      child: TaskStatisticsChart(
+                        statistics: Map.fromEntries(
+                          report.statistics.entries.where((entry) => DateTime.parse(entry.key).isBefore(DateTime.now())).map(
+                                (entry) => MapEntry<String, bool>(entry.key, entry.value as bool),
+                          ),
+                        ),
+                        containerHeight: 40, // Set the height of the chart container
+                      ),
+                    ),
+                  ),
+                ),
+
+                // Text('Statistics: ${report.statistics}'),
               ],
             ),
 

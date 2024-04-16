@@ -129,14 +129,14 @@ class _ReportPageState extends State<ReportPage> {
         SizedBox(height: 8),
         if (goals.isNotEmpty) // Render the ListView only if goals is not empty
           Container(
-            height: 200,
+            height: 600,
             child: ListView.builder(
-              scrollDirection: Axis.horizontal,
+              scrollDirection: Axis.vertical,
               itemCount: goals.length,
               itemBuilder: (context, index) {
                 final goal = goals[index];
                 return Padding(
-                  padding: EdgeInsets.only(right: 16), // Add right padding to create the gap between items
+                  padding: EdgeInsets.only(right: 0), // Add right padding to create the gap between items
                   child: SizedBox(
                     width: null, // Allow the width to be determined by the child's content
                     child: ReportTile(goal: goal),

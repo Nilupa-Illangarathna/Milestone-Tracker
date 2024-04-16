@@ -23,48 +23,76 @@ class ReportTile extends StatelessWidget {
       child: Container(
         margin: EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: Colors.white,
           borderRadius: BorderRadius.circular(8),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
-              spreadRadius: 1,
-              blurRadius: 3,
-              offset: Offset(0, 2),
-            ),
-          ],
         ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(8), // Match the border radius with the container
-          child: Stack(
-            children: [
-              // Background Image
-              Positioned.fill(
-                child: Opacity(
-                  opacity: 0.4,
-                  child: Container(
-                    child: Image.network(
-                      goal.goalImageURL,
-                      fit: BoxFit.cover,
+        child: Stack(
+          children: [
+            // Image
+            Positioned.fill(
+              child: Opacity(
+                opacity:0.5,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: Image.network(
+                    goal.goalImageURL,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+            ),
+            // Gradient overlay
+            Positioned.fill(
+              child: Opacity(
+                opacity:0.6,
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    gradient: LinearGradient(
+                      begin: Alignment.centerLeft,
+                      end: Alignment.centerRight,
+                      colors: [Colors.black.withOpacity(0.8), Colors.black.withOpacity(0.6)],
                     ),
                   ),
                 ),
               ),
-              // Content
-              Padding(
-                padding: EdgeInsets.all(8),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Name: ${goal.name}'),
-                    Text('Start Date: $formattedStartDate'),
-                    Text('Target Date: $formattedTargetDate'),
-                    Text('Tasks Count: ${goal.tasks.length}'),
-                  ],
-                ),
+            ),
+            // Content
+            Padding(
+              padding: EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    goal.name,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 12),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Start Date: $formattedStartDate',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      Text(
+                        'Target Date: $formattedTargetDate',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 12),
+                  Text(
+                    'Tasks Count: ${goal.tasks.length}',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

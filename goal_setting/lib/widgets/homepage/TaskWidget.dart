@@ -24,6 +24,29 @@ class _TaskWidgetState extends State<TaskWidget> {
     super.initState();
     // Initialize todayComplete based on the current date-related statistical value
     todayComplete = _getTodayCompletionStatus();
+
+    // Calculate the true percentage
+    int trueCount = 0;
+    int falseCount = 0;
+    widget.task.report.statistics.values.forEach((value) {
+      if (value) {
+        trueCount++;
+      } else {
+        falseCount++;
+      }
+    });
+
+    // Calculate the true percentage
+    int truePercentage = (trueCount / (trueCount + falseCount -1) * 100).round();
+    print('True Percentage: $truePercentage');
+
+    // Update the progress value with the true percentage
+    if (widget.task.progress != null) {
+      setState(() {
+        widget.task.progress.progressValue = truePercentage;
+      });
+    }
+
   }
 
   @override

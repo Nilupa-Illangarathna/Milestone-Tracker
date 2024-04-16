@@ -14,7 +14,11 @@ import 'Report.dart';
 class ReportContentPage extends StatelessWidget {
   final Goal goal;
 
+
+
   const ReportContentPage({Key? key, required this.goal}) : super(key: key);
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -24,17 +28,21 @@ class ReportContentPage extends StatelessWidget {
       // ),
       body: Stack(
         children: [
-          Container(
-            height:250,
-            width:MediaQuery.of(context).size.width,
-            child: Positioned.fill(
-              child: Opacity(
-                opacity: 0.6,
-                child: Container(
-
-                  child: Image.network(
-                    goal.goalImageURL,
-                    fit: BoxFit.cover,
+          SizedBox(
+            height:230,
+            child: Container(
+              height:250,
+              width:MediaQuery.of(context).size.width,
+              child: Positioned.fill(
+                child: Opacity(
+                  opacity: 0.6,
+                  child: Container(
+                    height:100,
+                    child: Image.network(
+                      goal.goalImageURL,
+                      fit: BoxFit.cover,
+                      height:100,
+                    ),
                   ),
                 ),
               ),
@@ -90,7 +98,7 @@ class ReportContentPage extends StatelessWidget {
                     itemCount: goal.tasks.length,
                     itemBuilder: (context, index) {
                       final task = goal.tasks[index];
-                      return ReportDoc(task:task);
+                      return ReportDoc(task:task, imageUrl:goal.ImageURL);
                     },
                   ),
                 ),

@@ -5,6 +5,7 @@ import '../../global/global_settings.dart';
 import '../../main.dart';
 // import '../page_viewer.dart';
 import 'pages/set_new_goals.dart';
+import 'pages/settings_page.dart';
 import 'pages/user_home_page.dart';
 import '../../utils/theme.dart';
 import '../app_drawer.dart';
@@ -39,7 +40,7 @@ class _HomePageState extends State<HomePage> {
             UserHomePage(),
             SetGoalPage(),
             ReportPage(),
-            Page4(),
+            SettingsPage(),
           ],
         ),
         drawer: globalData.enableDrawer ? AppDrawer() : null,

@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:goal_setting/data_classes/sub%20classes/task_class.dart';
 import 'package:intl/intl.dart';
 
 import '../../data_classes/sub classes/achievement_class.dart';
+import '../Social share/social.dart';
 
 class AchievementWidget extends StatelessWidget {
   final Achievement achievement;
+  final Task task;
+  final String imageUrl;
 
-  const AchievementWidget({Key? key, required this.achievement}) : super(key: key);
+  const AchievementWidget({Key? key, required this.achievement, required this.task, required this.imageUrl}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,19 +20,46 @@ class AchievementWidget extends StatelessWidget {
       child: ListTile(
         leading: _buildAwardBadge(),
         title: Text(
-          achievement.name,
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.indigo),
+          'Description: ${achievement.description}',
+          style: TextStyle(fontWeight: FontWeight.w500, color: Colors.black),
         ),
-        subtitle: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        subtitle: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              'Description: ${achievement.description}',
-              style: TextStyle(color: Colors.black),
-            ),
             Text(
               'Date Earned: ${DateFormat('yyyy-MM-dd').format(achievement.dateEarned)}',
               style: TextStyle(color: Colors.black),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: IconButton(
+                icon: Container(
+                  height: 32,
+                  width: 56,
+                  decoration: BoxDecoration(
+                    color: Colors.blue.withOpacity(1.0),
+                    borderRadius: BorderRadius.circular(6.0),
+                  ),
+                  child: Center(
+                    child: Text(
+                      "Share",
+                      style:TextStyle(
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white,
+                          fontSize:14
+                      )
+                    ),
+                  ),
+                ),
+                onPressed: () {
+                  // String body = 'Check out my latest update on $topic!';
+                  // String imageUrl = 'https://example.com/image.jpg'; // Replace with the actual image URL
+                  // String topic = 'Flutter Development';
+
+                  shareOnSocialMedia(context: context, body: achievement.description, imageUrl: imageUrl, topic:task.name);
+                  // Navigator.of(context).pop();
+                },
+              ),
             ),
           ],
         ),

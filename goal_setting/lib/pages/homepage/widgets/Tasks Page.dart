@@ -25,17 +25,20 @@ class TilePage extends StatelessWidget {
       // ),
       body: Stack(
         children: [
-          Container(
-            height:250,
-            width:MediaQuery.of(context).size.width,
-            child: Positioned.fill(
-              child: Opacity(
-                opacity: 0.6,
-                child: Container(
+          SizedBox(
+            height:230,
+            child: Container(
+              height:250,
+              width:MediaQuery.of(context).size.width,
+              child: Positioned.fill(
+                child: Opacity(
+                  opacity: 0.6,
+                  child: Container(
 
-                  child: Image.network(
-                    goal.goalImageURL,
-                    fit: BoxFit.cover,
+                    child: Image.network(
+                      goal.goalImageURL,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
               ),
