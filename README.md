@@ -1,21 +1,33 @@
-# Milestone Tracker 
+# Goal Setting App
 
-Milestone Tracker is a Flutter application designed to help users set and achieve their goals effectively.
+The Goal Setting App helps users set and manage their goals effectively. This Flutter application provides features for users to create, track, and delete their goals.
+
+[![Flutter](https://img.shields.io/badge/Flutter-2.10.0-blue)](https://flutter.dev/)
+[![Node.js](https://img.shields.io/badge/Node.js-16.14.0-green)](https://nodejs.org/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-5.0.3-brightgreen)](https://www.mongodb.com/)
+[![Supabase](https://img.shields.io/badge/Supabase-latest-orange)](https://supabase.io/)
 
 ## Features
 
-- **Login and Signup:** Users can securely create accounts and log in to access their profiles.
-- **Custom Themes:** The app features customizable themes for a personalized user experience.
-- **Data Structure:** Implemented a structured data model to store user information efficiently.
-- **Navigation:** Smooth transitions between login, signup, and other screens for seamless user experience.
-- **Goal Setting:** Coming soon! Stay tuned for updates on milestone tracking features.
+- **User Authentication**: Users can log in to their accounts securely.
+- **User Profile**: Users can view and edit their profile information.
+- **Goal Management**: Users can create, update, and delete their goals.
+- **Task Management**: Each goal can have multiple tasks associated with it, which users can manage.
+- **Quote of the Day**: Users receive inspirational quotes to stay motivated.
 
-## Getting Started
+## Technologies
 
-To get started with Milestone Tracker, follow these steps:
+- User authentication and authorization using Supabase.
+- CRUD operations for managing goals and tasks.
+- Ability to set goals for 7 days, 21 days, and custom durations.
+- User-friendly interface for tracking progress and managing goals.
+- Integration with MongoDB Atlas for scalable and reliable data storage.
 
-1. Clone this repository to your local machine.
-2. Set up Flutter development environment if you haven't already.
-3. Open the project in your preferred IDE.
-4. Run the app on your emulator or physical device.
+## Installation
 
+To run the Goal Setting App locally, follow these steps:
+
+1. Clone this repository to your local machine:
+
+   ```bash
+   git clone https://github.com/your-username/goal-setting-app.git
