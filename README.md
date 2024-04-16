@@ -19,6 +19,3 @@ To get started with Milestone Tracker, follow these steps:
 3. Open the project in your preferred IDE.
 4. Run the app on your emulator or physical device.
 
-## Contributing
-
-Contributions to Milestone Tracker are welcome! If you have any suggestions, bug fixes, or new features to add, please fork the repository and submit a pull request.
