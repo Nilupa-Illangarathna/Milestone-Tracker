@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../../../data_classes/sub classes/goal_class.dart';
+import '../../../data_state/dataState.dart';
 import '../../../widgets/homepage/TaskWidget.dart';
 
 import 'package:flutter/material.dart';
@@ -12,8 +13,9 @@ import '../../../widgets/homepage/TaskWidget.dart';
 
 class TilePage extends StatelessWidget {
   final Goal goal;
+  final Function(String) updateGoalsAfterDeletion;
 
-  const TilePage({Key? key, required this.goal}) : super(key: key);
+  const TilePage({Key? key, required this.goal, required this.updateGoalsAfterDeletion}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +30,7 @@ class TilePage extends StatelessWidget {
             width:MediaQuery.of(context).size.width,
             child: Positioned.fill(
               child: Opacity(
-                opacity: 0.3,
+                opacity: 0.6,
                 child: Container(
 
                   child: Image.network(
@@ -50,22 +52,46 @@ class TilePage extends StatelessWidget {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          IconButton(
-                            icon: Container(
-                              height: 48,
-                              width: 48,
-                              decoration: BoxDecoration(
-                                color: Colors.grey.withOpacity(0.2),
-                                borderRadius: BorderRadius.circular(15.0),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              IconButton(
+                                icon: Container(
+                                  height: 48,
+                                  width: 48,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white.withOpacity(0.2),
+                                    borderRadius: BorderRadius.circular(15.0),
+                                  ),
+                                  child: Icon(
+                                    Icons.close,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
                               ),
-                              child: Icon(
-                                Icons.close,
-                                color: Colors.grey,
+                              IconButton(
+                                icon: Container(
+                                  height: 48,
+                                  width: 48,
+                                  decoration: BoxDecoration(
+                                    color: Colors.red.withOpacity(0.5),
+                                    borderRadius: BorderRadius.circular(15.0),
+                                  ),
+                                  child: Icon(
+                                    Icons.delete,
+                                    color: Colors.black.withOpacity(0.4),
+                                  ),
+                                ),
+                                onPressed: () {
+                                  // global_user_data_OBJ.deleteGoalById(goalId: goal.id);
+                                  updateGoalsAfterDeletion(goal.id);
+                                  Navigator.of(context).pop();
+                                },
                               ),
-                            ),
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
+                            ],
                           ),
                           Text(
                             'Goal Details',

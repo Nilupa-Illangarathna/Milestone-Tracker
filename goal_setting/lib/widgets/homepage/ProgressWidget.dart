@@ -14,7 +14,7 @@ class ProgressWidget extends StatelessWidget {
     final formattedDate = DateFormat('yyyy-MM-dd').format(progress.date);
 
     // Parse completion percentage and convert it to double
-    final completionPercentage = double.parse(progress.value) / 100;
+    final completionPercentage = progress.value / 100;
 
     // Calculate color based on completion percentage
     final color = Color.lerp(Colors.red.withOpacity(0.9), Colors.green.withOpacity(0.9), completionPercentage);

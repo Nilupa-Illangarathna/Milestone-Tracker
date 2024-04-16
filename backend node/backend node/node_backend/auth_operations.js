@@ -66,12 +66,7 @@ async function login_post_method(username, password) {
     username = username.trim();
     console.log(username, "  ", password);
     const { data, error } = await crud('goalkeepingapp_users', 'read', { username });
-  
-    console.log("Retrieved data:", data);
-  
-    console.log("Retrieved data:", username);
-  
-    console.log("Retrieved data:", password);
+
   
     if (error) {
       console.error('Error occurred while fetching user data:', error.message);
@@ -81,9 +76,6 @@ async function login_post_method(username, password) {
     // Check if data is retrieved and passwords match (case-insensitive)
     if (data && data.length > 0) {
       const user = data[0]; // Assuming username is unique, so we take the first user
-      console.log("Retrieved data:", user);
-      console.log("Retrieved data:", user.password);
-      console.log("Retrieved data:", user.username);
       
       if (user.password.toLowerCase() === password.toLowerCase() && user.username.toLowerCase() === username.toLowerCase()) {
         return { success: true, user };

@@ -4,6 +4,7 @@ import 'package:goal_setting/pages/app_drawer.dart';
 import 'package:goal_setting/pages/authentication/login/login_page.dart';
 import 'package:goal_setting/pages/authentication/signup/signup_page.dart';
 import 'package:goal_setting/pages/homepage/home_page.dart';
+import 'package:goal_setting/pages/homepage/pages/set_new_goals.dart';
 import 'package:goal_setting/pages/homepage/pages/user_home_page.dart';
 import 'data_classes/global_data_class.dart';
 import 'dummy_user_page.dart';
@@ -36,6 +37,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: AppTheme.themeData,
       // home: UserHomePage(), // Set SplashScreen as the initial route
+      //    home: SetGoalPage(),
       // initialRoute:'/home',
       initialRoute:'/splash',
       routes: {

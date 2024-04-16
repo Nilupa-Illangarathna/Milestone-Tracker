@@ -5,7 +5,7 @@ class Progress {
   String goalID; // Unique identifier for each achievement
   String taskId; // Unique identifier for each achievement
   DateTime date;
-  dynamic value; // Progress value (e.g., percentage completed, numeric value, etc.)
+  int value; // Progress value (e.g., percentage completed, numeric value, etc.)
 
   // Constructor
   Progress({

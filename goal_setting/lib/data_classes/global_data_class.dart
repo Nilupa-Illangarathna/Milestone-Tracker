@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:goal_setting/data_classes/sub%20classes/user_profile_data.dart';
+import '../data_state/dataState.dart';
 import 'sub classes/goal_class.dart';
 import 'sub classes/quote_class.dart';
 
@@ -93,5 +94,41 @@ class GlobalData {
       customGoals: customGoalsList,
       quotes: quotesList,
     );
+  }
+
+  // TODO: Method to add a goal and append it to the correct array based on its duration
+  // FIXME: API call should be done
+  void addGoalAndAppendArray({required Goal newGoal}) {
+    if (newGoal.targetDate.difference(newGoal.startDate).inDays == 7) {
+      goals7Days.add(newGoal);
+    } else if (newGoal.targetDate.difference(newGoal.startDate).inDays == 21) {
+      goals21Days.add(newGoal);
+    } else {
+      customGoals.add(newGoal);
+    }
+
+    // Update database
+    updateDatabase();
+  }
+
+
+  // Function to delete a goal based on its ID from any of the arrays
+  void deleteGoalById({required String goalId}) {
+    // Remove goal from goals7Days if found
+    goals7Days.removeWhere((goal) => goal.id == goalId);
+
+    // Remove goal from goals21Days if found
+    goals21Days.removeWhere((goal) => goal.id == goalId);
+
+    // Remove goal from customGoals if found
+    customGoals.removeWhere((goal) => goal.id == goalId);
+
+    // Update database
+    updateDatabase();
+  }
+
+  //TODO : We can make this automated isnide this class itelf
+  void updateDatabase(){
+    sendGlobalData(globalData:global_user_data_OBJ); //TODO
   }
 }

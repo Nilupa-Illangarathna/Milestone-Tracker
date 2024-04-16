@@ -4,12 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:goal_setting/data_classes/global_data_class.dart';
 import 'package:goal_setting/data_instance_creation.dart';
 
+import '../../../data_state/dataState.dart';
 import '../../../data_classes/sub classes/goal_class.dart';
 import '../../../data_classes/sub classes/quote_class.dart';
 import '../../../data_classes/sub classes/user_profile_data.dart';
 import '../../../dummy_user_page.dart';
 import '../../../utils/theme.dart';
 import '../../../widgets/homepage/QuateWidget.dart';
+import '../../../widgets/homepage/UserDataWidget.dart';
 import '../widgets/Goal Page.dart';
 
 
@@ -29,26 +31,49 @@ class _UserHomePageState extends State<UserHomePage> {
   @override
   void initState() {
     super.initState();
-    final globalData = generateRandomGlobalData();
-    userData = globalData.userData;
-    goals7Days = globalData.goals7Days;
-    goals21Days = globalData.goals21Days;
-    customGoals = globalData.customGoals;
+    userData = global_user_data_OBJ.userData;
+    goals7Days = global_user_data_OBJ.goals7Days;
+    goals21Days = global_user_data_OBJ.goals21Days;
+    customGoals = global_user_data_OBJ.customGoals;
     final random = Random();
-    quote1 = globalData.quotes[random.nextInt(globalData.quotes.length)];
-    quote2 = globalData.quotes[random.nextInt(globalData.quotes.length)];
+    quote1 = global_user_data_OBJ.quotes[0];
+    quote2 = global_user_data_OBJ.quotes[1];
+  }
+
+  void updateGoalsAfterDeletion(String goalId) {
+    setState(() {
+      // TODO: Find and remove the goal with the provided goalId from the lists
+      global_user_data_OBJ.deleteGoalById(goalId: goalId);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
 
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: SingleChildScrollView(
-          child: Stack(
-            children: [
-              Padding(
+      body: Stack(
+        children: [
+          Container(
+            height:MediaQuery.of(context).size.height,
+            width:MediaQuery.of(context).size.width,
+            padding:EdgeInsets.only(left:100),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Opacity(
+                  opacity: 0.6, // Set the opacity value as desired
+                  child: Image.asset(
+                    'assets/images/background.png', // Replace 'your_image.png' with your image asset path
+                    fit: BoxFit.fill, // Adjust the fit as needed
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SingleChildScrollView(
+              child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Stack(
                   children: [
@@ -58,7 +83,7 @@ class _UserHomePageState extends State<UserHomePage> {
                       children: [
                         SizedBox(height: 18),
                         Text(
-                          'Goal Setting',
+                          'Goal Setting App',
                           style: TextStyle(
                             fontSize: 36.0,
                             fontWeight: FontWeight.bold,
@@ -92,9 +117,9 @@ class _UserHomePageState extends State<UserHomePage> {
                   ],
                 ),
               ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
@@ -108,25 +133,68 @@ class _UserHomePageState extends State<UserHomePage> {
           style: AppTheme.headerTextStyle,
         ),
         SizedBox(height: 8),
-        Container(
-          height: 200,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: goals.length,
-            itemBuilder: (context, index) {
-              final goal = goals[index];
-              return Padding(
-                padding: EdgeInsets.only(right: 16), // Add right padding to create the gap between items
-                child: SizedBox(
-                  width: null, // Allow the width to be determined by the child's content
-                  child: GoalTile(goal: goal),
+        if (goals.isNotEmpty) // Render the ListView only if goals is not empty
+          Container(
+            height: 200,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: goals.length,
+              itemBuilder: (context, index) {
+                final goal = goals[index];
+                return Padding(
+                  padding: EdgeInsets.only(right: 16), // Add right padding to create the gap between items
+                  child: SizedBox(
+                    width: null, // Allow the width to be determined by the child's content
+                    child: GoalTile(goal: goal, updateGoalsAfterDeletion: updateGoalsAfterDeletion, ),
+                  ),
+                );
+              },
+            ),
+          )
+        else // Render an empty SizedBox with the desired height if goals is empty
+          GestureDetector(
+            onTap: null, // Disable onTap functionality
+            child: Container(
+              height: 60,
+              width:200,
+              // width: MediaQuery.of(context).size.width, // Match the width of the screen
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.grey[300], // Adjust color to represent disabled state
+              ),
+              child: Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Add Goals ',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey[600], // Adjust color to represent disabled state
+                      ),
+                    ),
+                    Icon(
+                      Icons.arrow_forward_ios, // Use the arrow forward icon
+                      size: 16, // Adjust size as needed
+                      color: Colors.grey[600], // Adjust color to represent disabled state
+                    ),
+                    Icon(
+                      Icons.arrow_forward_ios, // Use the arrow forward icon
+                      size: 16, // Adjust size as needed
+                      color: Colors.grey[600], // Adjust color to represent disabled state
+                    ),
+                    Icon(
+                      Icons.arrow_forward_ios, // Use the arrow forward icon
+                      size: 16, // Adjust size as needed
+                      color: Colors.grey[600], // Adjust color to represent disabled state
+                    ),
+                  ],
                 ),
-              );
-            },
+              ),
+            ),
           ),
-        ),
       ],
     );
   }
-
 }

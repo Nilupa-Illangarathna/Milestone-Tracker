@@ -7,8 +7,9 @@ import 'Tasks Page.dart';
 
 class GoalTile extends StatelessWidget {
   final Goal goal;
+  final Function(String) updateGoalsAfterDeletion;
 
-  const GoalTile({Key? key, required this.goal}) : super(key: key);
+  const GoalTile({Key? key, required this.goal, required this.updateGoalsAfterDeletion}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +18,7 @@ class GoalTile extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => TilePage(goal: goal)));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => TilePage(goal: goal, updateGoalsAfterDeletion: updateGoalsAfterDeletion,)));
       },
       child: Container(
         margin: EdgeInsets.all(8),
@@ -40,7 +41,7 @@ class GoalTile extends StatelessWidget {
               // Background Image
               Positioned.fill(
                 child: Opacity(
-                  opacity: 0.3,
+                  opacity: 0.4,
                   child: Container(
                     child: Image.network(
                       goal.goalImageURL,

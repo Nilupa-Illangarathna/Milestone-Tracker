@@ -31,7 +31,7 @@ class GlobalData {
 
   //Homepage realated
   //App drawer
-  bool enableDrawer = true;
+  bool enableDrawer = false;
   int homePageViewTransTime = 200; //Between two pages
 
   // Constructor

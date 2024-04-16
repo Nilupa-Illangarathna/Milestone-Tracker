@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:goal_setting/pages/homepage/pages/report_page.dart';
+import '../../data_state/dataState.dart';
 import '../../global/global_settings.dart';
 import '../../main.dart';
 // import '../page_viewer.dart';
+import 'pages/set_new_goals.dart';
 import 'pages/user_home_page.dart';
 import '../../utils/theme.dart';
 import '../app_drawer.dart';
@@ -16,6 +19,7 @@ class _HomePageState extends State<HomePage> {
   PageController _pageController = PageController();
 
   bool _isAnimating = false;
+
 
   @override
   Widget build(BuildContext context) {
@@ -33,8 +37,8 @@ class _HomePageState extends State<HomePage> {
           },
           children: [
             UserHomePage(),
-            Page2(),
-            Page3(),
+            SetGoalPage(),
+            ReportPage(),
             Page4(),
           ],
         ),
@@ -47,15 +51,15 @@ class _HomePageState extends State<HomePage> {
           items: [
             BottomNavigationBarItem(
               icon: Icon(Icons.home),
-              label: 'Home',
+              label: 'Overview',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: 'Profile',
+              icon: Icon(Icons.edit),
+              label: 'Set Goals',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.notifications),
-              label: 'Notifications',
+              icon: Icon(Icons.analytics),
+              label: 'Reports',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.settings),

@@ -51,7 +51,7 @@ class RandomDataGenerator {
   }
 
 
-  static String pickRandomItem(List<String> items) {
+  static dynamic pickRandomItem(List<dynamic> items) {
     final random = Random();
     return items[random.nextInt(items.length)];
   }
@@ -289,10 +289,7 @@ class RandomDataGenerator {
   static Quote generateRandomQuote() {
     final List<List<String>> quotesList = [
       ["The only way to do great work is to love what you do.", "Steve Jobs"],
-      [
-        "Success is not final, failure is not fatal: It is the courage to continue that counts.",
-        "Winston Churchill"
-      ],
+      ["Success is not final, failure is not fatal: It is the courage to continue that counts.", "Winston Churchill"],
       ["Believe you can and you're halfway there.", "Theodore Roosevelt"],
       ["The future belongs to those who believe in the beauty of their dreams.", "Eleanor Roosevelt"],
       ["It does not matter how slowly you go as long as you do not stop.", "Confucius"],
@@ -314,57 +311,13 @@ class RandomDataGenerator {
     );
   }
 
-  static GlobalData generateRandomGlobalData() {
+  static GlobalData generateRandomGlobalData(int numberOfRandomGeneratod, int NumberOfQuotes,  UserData userDataOBJ) {
     return GlobalData(
-      userData: generateRandomUserData(),
-      goals7Days: List.generate(Random().nextInt(8) + 6, (_) => generateRandomGoal([7])),
-      goals21Days: List.generate(Random().nextInt(8) + 6, (_) => generateRandomGoal([21])),
-      customGoals: List.generate(Random().nextInt(8) + 6, (_) => generateRandomGoal([Random().nextInt(365)])),
-      quotes: List.generate(Random().nextInt(8) + 1, (_) => generateRandomQuote()),
-    );
-  }
-}
-
-
-
-class UserDataWidget extends StatelessWidget {
-  final UserData userData;
-
-  const UserDataWidget({Key? key, required this.userData}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'User Data:',
-          style: AppTheme.headerTextStyle.copyWith(
-            fontSize: 18.0, // Adjust font size
-          ),
-        ),
-        SizedBox(height: 8), // Add vertical spacing
-        Text(
-          'Name: ${userData.name}',
-          style: TextStyle(fontSize: 16), // Use a slightly smaller font size
-        ),
-        Text(
-          'Age: ${userData.age}',
-          style: TextStyle(fontSize: 16), // Use a slightly smaller font size
-        ),
-        Text(
-          'Username: ${userData.username}',
-          style: TextStyle(fontSize: 16), // Use a slightly smaller font size
-        ),
-        Text(
-          'Email: ${userData.email}',
-          style: TextStyle(fontSize: 16), // Use a slightly smaller font size
-        ),
-        Text(
-          'Mobile: ${userData.mobile}',
-          style: TextStyle(fontSize: 16), // Use a slightly smaller font size
-        ),
-      ],
+      userData: userDataOBJ,
+      goals7Days: List.generate(Random().nextInt(numberOfRandomGeneratod + 1), (_) => generateRandomGoal([7])),
+      goals21Days: List.generate(Random().nextInt(numberOfRandomGeneratod + 1), (_) => generateRandomGoal([21])),
+      customGoals: List.generate(Random().nextInt(numberOfRandomGeneratod + 1), (_) => generateRandomGoal([Random().nextInt(365)])),
+      quotes: List.generate(Random().nextInt(NumberOfQuotes) + 1, (_) => generateRandomQuote()),
     );
   }
 }

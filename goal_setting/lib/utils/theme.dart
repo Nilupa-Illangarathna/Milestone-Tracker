@@ -11,10 +11,11 @@ class AppTheme {
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all<Color>(Colors.indigo),
+        elevation: MaterialStateProperty.all<double?>(2),
+        backgroundColor: MaterialStateProperty.all<Color>(Colors.blue[600]!),
         shape: MaterialStateProperty.all<OutlinedBorder>(
           RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20.0),
+            borderRadius: BorderRadius.circular(10.0),
           ),
         ),
         textStyle: MaterialStateProperty.all<TextStyle>(
