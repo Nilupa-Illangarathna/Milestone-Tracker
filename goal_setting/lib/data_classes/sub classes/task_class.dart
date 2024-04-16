@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../data_state/dataState.dart';
 import './achievement_class.dart';
 import './progress_class.dart';
 import './report_class.dart';
@@ -99,4 +100,37 @@ class Task {
       progress: Progress.fromJson(json['progress']),
     );
   }
+
+  //TODO Add this method to the Task class
+  int updateStatistics(DateTime date) {
+    // Format the date to match the format used in the statistics map
+    String formattedDate = '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
+
+    // Update the statistics map
+    if (report.statistics.containsKey(formattedDate)) {
+      report.statistics[formattedDate] = true;
+    } else {
+      // If the date key doesn't exist, you can choose to handle it here
+      // For example, you could throw an exception or simply ignore it
+      // For now, let's print a message indicating that the date key doesn't exist
+      print('Date key $formattedDate not found in statistics map.');
+    }
+
+    // Calculate the percentage of true values in the statistics map
+    double trueCount = report.statistics.values.where((value) => value == true).length.toDouble();
+    double totalCount = report.statistics.length.toDouble();
+    double percentage = trueCount / totalCount * 100;
+
+    // Round up the percentage value
+    int roundedPercentage = percentage.ceil();
+
+    // Ensure the rounded percentage value is within the inclusive 0 to 100 range
+    roundedPercentage = roundedPercentage.clamp(0, 100);
+
+    global_user_data_OBJ.updateDatabase();
+    // Return the rounded percentage value
+    return roundedPercentage;
+  }
+
+
 }

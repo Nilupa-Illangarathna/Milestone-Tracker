@@ -43,6 +43,7 @@ class GoalTile extends StatelessWidget {
                 child: Opacity(
                   opacity: 0.4,
                   child: Container(
+                    height:200,
                     child: Image.network(
                       goal.goalImageURL,
                       fit: BoxFit.cover,

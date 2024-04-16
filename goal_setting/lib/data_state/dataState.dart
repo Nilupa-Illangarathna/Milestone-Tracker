@@ -49,7 +49,7 @@ Future<String> sendGlobalData({required GlobalData globalData}) async {
     Map<String, dynamic>? response = await apiCaller.callApi('update_global_data', globalData.toJson());
 
 
-    if (response != null && response['success']) {
+    if (response != null) {
       // Login successful
       print('Saving successful. User data: ${response['user']}');
       return "success";

@@ -396,9 +396,9 @@ class _SetGoalPageState extends State<SetGoalPage> {
                       report: Report(
                         goalID: goalID,
                         taskId: taskID,
-                        dateRangeStart: DateTime.now(),
-                        dateRangeEnd:  DateTime.now(),
-                        statistics: {},
+                        dateRangeStart: startDate!,
+                        dateRangeEnd:  taskEndDate,
+                        statistics: generateStatistics(datesInRange(startDate!, taskEndDate)),
                       ), // Empty report
                       progress: Progress(
                           goalID: goalID,
@@ -436,6 +436,34 @@ class _SetGoalPageState extends State<SetGoalPage> {
         ),
       ),
     );
+  }
+
+// Create a function to generate a list of dates within a range
+  List<DateTime> datesInRange(DateTime start, DateTime end) {
+    var dates = <DateTime>[];
+
+    // Increment the end date by one day to exclude it from the range
+    end = end.add(Duration(days: 1));
+
+    for (var date = start; date.isBefore(end); date = date.add(Duration(days: 1))) {
+      dates.add(date);
+    }
+
+    print(dates);
+    return dates;
+  }
+
+
+  // Create a function to generate a map of statistics with dates as keys
+  Map<String, bool> generateStatistics(List<DateTime> dates) {
+    Map<String, bool> statistics = {};
+    for (var date in dates) {
+      // Format the date to a string representation
+      String formattedDate = DateFormat('yyyy-MM-dd').format(date);
+      // Set the value to false initially
+      statistics[formattedDate] = false;
+    }
+    return statistics;
   }
 
 
