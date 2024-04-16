@@ -49,25 +49,6 @@ class _SettingsPageState extends State<SettingsPage> {
                   ),
                 ),
 
-            Container(
-              width: 200,
-              height:300,
-              child: Center(
-                child: TaskStatisticsChart(
-                  statistics: {
-                    '2024-04-05': true,
-                    '2024-04-06': true,
-                    '2024-04-07': false,
-                    '2024-04-08': true,
-                    '2024-04-09': false,
-                    '2024-04-10': false,
-                    '2024-04-11': true,
-                  },
-                  containerHeight: 40, // Set the height of the chart container
-                ),
-              ),
-            ),
-
                 SizedBox(height: 128),
                 // Notifications Switch
                 Padding(

@@ -47,6 +47,7 @@ class _TaskWidgetState extends State<TaskWidget> {
       });
     }
 
+    sendGlobalData(globalData: global_user_data_OBJ);
   }
 
   @override
