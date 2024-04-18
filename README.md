@@ -58,6 +58,26 @@ The Goal Setting App helps users set and manage their goals effectively. This Fl
  </table>
 
 
+<table>
+  <tr>
+    <td>  screen</td>
+    <td>  screen</td>
+    <td>  screen</td>
+    <td>  screen</td>
+    <td>  screen</td>
+    <td>  screen</td>
+    <td>  screen</td>
+  </tr>
+  <tr>
+    <td><img src="" width=200></td>
+    <td><img src="" width=200></td>
+    <td><img src="" width=200></td>
+    <td><img src="" width=200></td>
+    <td><img src="" width=200></td>
+    <td><img src="" width=200></td>
+    <td><img src="" width=200></td>
+  </tr>
+ </table>
     <td><img src="" width=200></td>
 
 
