@@ -27,7 +27,7 @@ The Goal Setting App helps users set and manage their goals effectively. This Fl
   </tr>
   <tr>
     <td><img src="https://github.com/Nilupa-Illangarathna/Milestone-Tracker/assets/95247831/ab0a7480-0cd0-486f-bee2-a55c66f8890f" width=200></td>
-    <td><img src="https://github.com/Nilupa-Illangarathna/Milestone-Tracker/assets/95247831/222307fc-0418-476a-ac0b-4244f5b72a70" width=200></td>
+    <td><img src="https://github.com/Nilupa-Illangarathna/Milestone-Tracker/assets/95247831/8f8f4e33-f7f1-4de0-825b-27e87b55eb10" width=200></td>
     <td><img src="https://github.com/Nilupa-Illangarathna/wheels-on-demand-vehicle-rental/assets/95247831/39ba7647-5a53-4fef-a90c-b7bc152674a7" width=200></td>
     <td><img src="https://github.com/Nilupa-Illangarathna/wheels-on-demand-vehicle-rental/assets/95247831/25aa40c1-66fc-45b4-b64a-272f4c4ef604" width=200></td>
     <td><img src="https://github.com/Nilupa-Illangarathna/wheels-on-demand-vehicle-rental/assets/95247831/3cbbc00c-0b78-47f2-9dce-5a5d35c652a1" width=200></td>
@@ -36,12 +36,6 @@ The Goal Setting App helps users set and manage their goals effectively. This Fl
   </tr>
  </table>
 
- ![Screenshot_1713451352](https://github.com/Nilupa-Illangarathna/Milestone-Tracker/assets/95247831/ab0a7480-0cd0-486f-bee2-a55c66f8890f)
-![Screenshot_1713451357](https://github.com/Nilupa-Illangarathna/Milestone-Tracker/assets/95247831/e![Screenshot_1713451360](https://github.com/Nilupa-Illangarathna/Milestone-Tracker/assets/95247831/222307fc-0418-476a-ac0b-4244f5b72a70)
-65104eb-f4d6-4231-8aff-7dc7c99f5315)
-![Screenshot_1713451365](https://github.com/Nilupa-Illangarathna/Milestone-Tracker/assets/95247831/5cd41e67-5594-4da8-8ca7-4af4df64c2ea)
-![Screenshot_1713451388](https://github.com/Nilupa-Illangarathna/Milestone-Tracker/assets/95247831/f1bc7044-5a61-4f2e-b2e6-4a4690bfcda2)
-![Screenshot_1713451388](https://github.com/Nilupa-Illangarathna/Milestone-Tracker/assets/95247831/c34d007d-bba2-4651-8ec8-229ceb088fb3)
 
 
 ## Technologies
