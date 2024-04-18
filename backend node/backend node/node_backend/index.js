@@ -3,6 +3,8 @@ const bodyParser = require('body-parser');
 const UserData = require('./data_classes/user_data');
 const { MongoClient, ObjectId } = require('mongodb');
 const { createClient } = require('@supabase/supabase-js');
+const cron = require('node-cron');
+
 const {
     createRecord,
     readRecord,
@@ -19,6 +21,26 @@ const {
 const { create, read, update, del, executeQuery } = require('./db_operations');
 const app = express();
 const port = 3500;
+
+
+// TODO: Schedule the notification scheduler execution time
+const schedulingTime = "20:30";
+
+// Define your quotes array
+const quotesList = [
+    ["The only way to do great work is to love what you do.", "Steve Jobs"],
+    ["Success is not final, failure is not fatal: It is the courage to continue that counts.", "Winston Churchill"],
+    ["Believe you can and you're halfway there.", "Theodore Roosevelt"],
+    ["The future belongs to those who believe in the beauty of their dreams.", "Eleanor Roosevelt"],
+    ["It does not matter how slowly you go as long as you do not stop.", "Confucius"],
+    ["You are never too old to set another goal or to dream a new dream.", "C.S. Lewis"],
+    ["Success is not the key to happiness. Happiness is the key to success. If you love what you are doing, you will be successful.", "Albert Schweitzer"],
+    ["The only limit to our realization of tomorrow will be our doubts of today.", "Franklin D. Roosevelt"],
+    ["The best way to predict the future is to create it.", "Abraham Lincoln"],
+    ["The only source of knowledge is experience.", "Albert Einstein"],
+    // Add more quotes as needed
+  ];
+
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -65,7 +87,7 @@ function scheduleNotification(time, notificationData, deviceToken) {
       notification: {
         title: notificationData.title,
         body: notificationData.body,
-        // imageUrl: notificationData.imageUrl,
+        imageUrl: notificationData.imageUrl,
       },
       token: deviceToken,
     };
@@ -217,7 +239,7 @@ async function getAllUserData() {
         // return { userPassPairs, globalData };
 
         const filteredData = await filterGlobalData(userPassPairs, allGlobalData);
-        console.log('Filtered global data:', filteredData);
+        // console.log('Filtered global data:', filteredData);
 
         // Iterate through each filtered global data object
         filteredData.forEach(async (userData) => {
@@ -228,11 +250,11 @@ async function getAllUserData() {
                 ...userData.customGoals // Flatten the customGoals array before extracting goals
             ];
 
-            console.log('All Goals:', allGoals);
+            // console.log('All Goals:', allGoals);
 
             // Convert notification time to TimeOfDay format
             const notificationTime = parseNotificationTime(userData.userData.notificationTime);
-            console.log('notificationTime:', notificationTime);
+            // console.log('notificationTime:', notificationTime);
             console.log((notificationTime.hour+":"+notificationTime.minute).toString());
 
 
@@ -248,6 +270,9 @@ async function getAllUserData() {
                     let notification_title = goal.name;
                     console.log('title: ', notification_title);
 
+                    let imageUrl = goal.ImageURL;
+                    // console.log('ImageURL:: ', imageUrl);
+
                     let bodyOfThe_Notification = "";
                     // Iterate through each goal
                     goal.tasks.forEach(task => {
@@ -255,7 +280,7 @@ async function getAllUserData() {
                         bodyOfThe_Notification += "\n";
                     });
 
-                    console.log('bodyOfThe_Notification: ', bodyOfThe_Notification);
+                    // console.log('bodyOfThe_Notification: ', bodyOfThe_Notification);
 
 
 
@@ -265,6 +290,7 @@ async function getAllUserData() {
                     const notificationData = {
                         title: notification_title,
                         body: bodyOfThe_Notification,
+                        imageUrl: imageUrl
                     };
 
 
@@ -280,21 +306,20 @@ async function getAllUserData() {
 }
 
 
+// TODO: 
+// getAllUserData();
 
-getAllUserData();
+// Parse the hour and minute from the scheduling time
+const [hour, minute] = schedulingTime.split(':').map(Number);
 
-
-
-
-
-
-
-
-
-
-
-
-
+// Schedule the task to run at the specified time every day
+cron.schedule(`${minute} ${hour} * * *`, () => {
+    // Run your function here
+    console.log('executed the scheduler now at ' + hour + ":" + minute);
+    getAllUserData();
+}, {
+    timezone: "Asia/Kolkata"
+});
 
 
 
@@ -506,6 +531,13 @@ app.post('/get_global_data', async (req, res) => {
     }
 });
 
+
+
+  
+  // Route to serve quotes
+  app.get('/quotes', (req, res) => {
+    res.json(quotesList);
+  });
 
 
 // Start the server

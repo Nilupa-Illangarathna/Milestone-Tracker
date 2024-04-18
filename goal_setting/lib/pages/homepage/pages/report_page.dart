@@ -127,26 +127,33 @@ class _ReportPageState extends State<ReportPage> {
           style: AppTheme.headerTextStyle,
         ),
         SizedBox(height: 8),
-        if (goals.isNotEmpty) // Render the ListView only if goals is not empty
-          Container(
-            height: 600,
-            child: ListView.builder(
-              scrollDirection: Axis.vertical,
-              itemCount: goals.length,
-              itemBuilder: (context, index) {
-                final goal = goals[index];
-                return Padding(
-                  padding: EdgeInsets.only(right: 0), // Add right padding to create the gap between items
-                  child: SizedBox(
-                    width: null, // Allow the width to be determined by the child's content
-                    child: ReportTile(goal: goal),
+        SingleChildScrollView(
+          child: Column(
+            children:[
+              if (goals.isNotEmpty) // Render the ListView only if goals is not empty
+                Container(
+                  height: (160 * goals.length) * 1.0, //150
+                  child: ListView.builder(
+                    // scrollDirection: Axis.vertical,
+                    itemCount: goals.length,
+                    itemBuilder: (context, index) {
+                      final goal = goals[index];
+                      return Padding(
+                        padding: EdgeInsets.only(right: 0), // Add right padding to create the gap between items
+                        child: SizedBox(
+                          width: null, // Allow the width to be determined by the child's content
+                          child: ReportTile(goal: goal),
+                        ),
+                      );
+                    },
                   ),
-                );
-              },
-            ),
-          )
-        else // Render an empty SizedBox with the desired height if goals is empty
-          SizedBox(height:0,width:0),
+                )
+              else // Render an empty SizedBox with the desired height if goals is empty
+                SizedBox(height:0,width:0),
+            ]
+          ),
+        ),
+
       ],
     );
   }

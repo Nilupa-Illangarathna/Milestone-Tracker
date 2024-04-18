@@ -15,6 +15,7 @@ import '../../../widgets/homepage/UserDataWidget.dart';
 import '../widgets/Goal Page.dart';
 
 
+
 class UserHomePage extends StatefulWidget {
   @override
   _UserHomePageState createState() => _UserHomePageState();
@@ -25,8 +26,7 @@ class _UserHomePageState extends State<UserHomePage> {
   late List<Goal> goals7Days;
   late List<Goal> goals21Days;
   late List<Goal> customGoals;
-  late Quote quote1;
-  late Quote quote2;
+
 
   @override
   void initState() {
@@ -36,8 +36,6 @@ class _UserHomePageState extends State<UserHomePage> {
     goals21Days = global_user_data_OBJ.goals21Days;
     customGoals = global_user_data_OBJ.customGoals;
     final random = Random();
-    quote1 = global_user_data_OBJ.quotes[0];
-    quote2 = global_user_data_OBJ.quotes[1];
   }
 
   void updateGoalsAfterDeletion(String goalId) {

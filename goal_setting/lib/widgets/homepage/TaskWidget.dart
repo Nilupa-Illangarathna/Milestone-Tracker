@@ -144,7 +144,7 @@ class _TaskWidgetState extends State<TaskWidget> {
             SizedBox(height: 8),
             Text('Start Date: ${DateFormat('yyyy-MM-dd').format(widget.task.startDate)}', style: TextStyle(color: Colors.black)),
             Text('Target Date: ${DateFormat('yyyy-MM-dd').format(widget.task.targetDate)}', style: TextStyle(color: Colors.black)),
-            Text('Completed: ${widget.task.completed}', style: TextStyle(color: Colors.black)),
+            Text('Completed: ${widget.task.progress.progressValue>50? "Yes":"No"}', style: TextStyle(color: Colors.black),),
             if (widget.task.progress != null) SizedBox(height: 8),
             if (widget.task.progress != null) ProgressWidget(progress: widget.task.progress),
           ],
@@ -152,6 +152,12 @@ class _TaskWidgetState extends State<TaskWidget> {
       ),
     );
   }
+
+
+  bool isDateInRange(DateTime currentDate, DateTime startDate, DateTime endDate) =>
+      currentDate.isAfter(startDate.subtract(Duration(days: 0))) &&
+          currentDate.isBefore(endDate.add(Duration(days: 0)));
+
 
   // Build the task widget with the completion button
   Widget _buildTaskWidgetWithButton() {
@@ -167,7 +173,7 @@ class _TaskWidgetState extends State<TaskWidget> {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                IconButton(
+                if(isDateInRange(DateTime.now(), widget.task.startDate, widget.task.targetDate)) IconButton(
                   icon: Container(
                     height: 48,
                     width: 48,
@@ -194,7 +200,7 @@ class _TaskWidgetState extends State<TaskWidget> {
                 SizedBox(height: 8),
                 Text('Start Date: ${DateFormat('yyyy-MM-dd').format(widget.task.startDate)}', style: TextStyle(color: Colors.black)),
                 Text('Target Date: ${DateFormat('yyyy-MM-dd').format(widget.task.targetDate)}', style: TextStyle(color: Colors.black)),
-                Text('Completed: ${widget.task.completed}', style: TextStyle(color: Colors.black)),
+                Text('Completed: ${widget.task.progress.progressValue>50? "Yes":"No"}', style: TextStyle(color: Colors.black),),
                 if (widget.task.progress != null) SizedBox(height: 8),
                 if (widget.task.progress != null) ProgressWidget(progress: widget.task.progress),
               ],

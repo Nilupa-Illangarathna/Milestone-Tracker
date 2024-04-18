@@ -31,7 +31,7 @@ class ReportDoc extends StatelessWidget {
             SizedBox(height: 8),
             Text('Start Date: ${DateFormat('yyyy-MM-dd').format(task.startDate)}', style: TextStyle(color: Colors.black),),
             Text('Target Date: ${DateFormat('yyyy-MM-dd').format(task.targetDate)}', style: TextStyle(color: Colors.black),),
-            Text('Completed: ${task.completed}', style: TextStyle(color: Colors.black),),
+            Text('Completed: ${task.progress.progressValue>50? "Yes":"No"}', style: TextStyle(color: Colors.black),),
             SizedBox(height: 16),
             task.progress.progressValue >= 60? Text(
               'Achievements:',

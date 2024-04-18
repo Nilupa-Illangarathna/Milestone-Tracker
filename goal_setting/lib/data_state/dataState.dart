@@ -9,7 +9,7 @@ import '../global/api_caller.dart';
 
 
 UserData userDataOBJ = UserData(name: '', age: 0, username: '', email: '', mobile: '', password: '', FirebaseServiceToken: '', notificationsOn: false, notificationTime: timeOfDayToString(TimeOfDay(hour: 8, minute: 0)),);
-GlobalData global_user_data_OBJ = generateRandomGlobalData(numberOfDummyGoals:0, userDataOBJ: userDataOBJ);
+GlobalDataInstance global_user_data_OBJ = generateRandomGlobalData(numberOfDummyGoals:0, userDataOBJ: userDataOBJ);
 
 
 String timeOfDayToString(TimeOfDay time) {
@@ -23,7 +23,7 @@ TimeOfDay stringToTimeOfDay(String timeString) {
   return TimeOfDay(hour: hour, minute: minute);
 }
 
-Future<GlobalData?> getGlobalData({required UserData userDataOBJ}) async {
+Future<GlobalDataInstance?> getGlobalData({required UserData userDataOBJ}) async {
   try {
     final response = await apiCaller.callApi('get_global_data', userDataOBJ.toJson());
     print("send data is : " );
@@ -33,8 +33,8 @@ Future<GlobalData?> getGlobalData({required UserData userDataOBJ}) async {
       if (response['globalDataFromDatabase'] != null) {
         // Parse the response data and return the GlobalData object
         print("recived data is : " );
-        print(GlobalData.fromJson(response['globalDataFromDatabase']));
-        return GlobalData.fromJson(response['globalDataFromDatabase']);
+        print(GlobalDataInstance.fromJson(response['globalDataFromDatabase']));
+        return GlobalDataInstance.fromJson(response['globalDataFromDatabase']);
       } else {
         // Handle the case where globalDataFromDatabase is null
         print('Received global data is null');
@@ -55,7 +55,7 @@ Future<GlobalData?> getGlobalData({required UserData userDataOBJ}) async {
 
 //TODO call thi to save globalData
 // New method to send global data
-Future<String> sendGlobalData({required GlobalData globalData}) async {
+Future<String> sendGlobalData({required GlobalDataInstance globalData}) async {
   try {
     Map<String, dynamic>? response = await apiCaller.callApi('update_global_data', globalData.toJson());
 

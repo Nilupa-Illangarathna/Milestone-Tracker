@@ -5,7 +5,7 @@ import 'sub classes/goal_class.dart';
 import 'sub classes/quote_class.dart';
 
 // Global Data Class
-class GlobalData {
+class GlobalDataInstance {
   UserData userData;
   List<Goal> goals7Days;
   List<Goal> goals21Days;
@@ -13,7 +13,7 @@ class GlobalData {
   List<Quote> quotes;
 
   // Constructor
-  GlobalData({
+  GlobalDataInstance({
     required this.userData,
     required this.goals7Days,
     required this.goals21Days,
@@ -76,7 +76,7 @@ class GlobalData {
   }
 
   // Create GlobalData object from JSON
-  factory GlobalData.fromJson(Map<String, dynamic> json) {
+  factory GlobalDataInstance.fromJson(Map<String, dynamic> json) {
     List<dynamic> goals7DaysJson = json['goals7Days'];
     List<dynamic> goals21DaysJson = json['goals21Days'];
     List<dynamic> customGoalsJson = json['customGoals'];
@@ -87,7 +87,7 @@ class GlobalData {
     List<Goal> customGoalsList = customGoalsJson.map((goalJson) => Goal.fromJson(goalJson)).toList();
     List<Quote> quotesList = quotesJson.map((quoteJson) => Quote.fromJson(quoteJson)).toList();
 
-    return GlobalData(
+    return GlobalDataInstance(
       userData: UserData.fromJson(json['userData']),
       goals7Days: goals7DaysList,
       goals21Days: goals21DaysList,

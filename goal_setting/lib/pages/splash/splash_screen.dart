@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:lottie/lottie.dart';
 
+import '../../dummy_user_page.dart';
 import '../../global/global_settings.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -102,6 +103,10 @@ class _SplashScreenState extends State<SplashScreen>
       Duration(seconds: globalData.splashTime), // Adjust the duration of the splash screen as needed
           () => Navigator.pushReplacementNamed(context, '/login'),
     );
+
+
+    fetchQuotes();
+
   }
 
   @override

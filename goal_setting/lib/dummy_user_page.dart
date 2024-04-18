@@ -20,6 +20,12 @@ import 'data_classes/sub classes/task_class.dart';
 import 'data_classes/sub classes/user_profile_data.dart';
 import 'data_state/dataState.dart';
 
+
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+import 'global/global_settings.dart';
+
 class RandomDataGenerator {
   static String generateRandomString(int length) {
     const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
@@ -316,13 +322,52 @@ class RandomDataGenerator {
     );
   }
 
-  static GlobalData generateRandomGlobalData(int numberOfRandomGeneratod, int NumberOfQuotes,  UserData userDataOBJ) {
-    return GlobalData(
+  static GlobalDataInstance generateRandomGlobalData(int numberOfRandomGeneratod, int NumberOfQuotes,  UserData userDataOBJ) {
+    return GlobalDataInstance(
       userData: userDataOBJ,
       goals7Days: List.generate(Random().nextInt(numberOfRandomGeneratod + 1), (_) => generateRandomGoal([7])),
       goals21Days: List.generate(Random().nextInt(numberOfRandomGeneratod + 1), (_) => generateRandomGoal([21])),
       customGoals: List.generate(Random().nextInt(numberOfRandomGeneratod + 1), (_) => generateRandomGoal([Random().nextInt(365)])),
       quotes: List.generate(Random().nextInt(NumberOfQuotes) + 1, (_) => generateRandomQuote()),
     );
+  }
+}
+
+
+late Quote quote1;
+late Quote quote2;
+
+Future<List<List<String>>> fetchQuotes() async {
+  final response = await http.get(Uri.parse('${globalData.baseUrlRoute}/quotes'));
+
+  if (response.statusCode == 200) {
+    // If the server returns a 200 OK response, parse the JSON
+    List<dynamic> decodedData = jsonDecode(response.body);
+    List<List<String>> quotesList = [];
+
+    decodedData.forEach((quote) {
+      if (quote is List<dynamic> && quote.length >= 2) {
+        quotesList.add([quote[0].toString(), quote[1].toString()]);
+      }
+    });
+
+    int randomNumber1 = Random().nextInt(quotesList.length);
+    int randomNumber2 = Random().nextInt(quotesList.length);
+    while(randomNumber1==randomNumber2 && quotesList.length>1) {
+      randomNumber2 = Random().nextInt(quotesList.length);
+    }
+    quote1 =   Quote(id:"1", text: quotesList[randomNumber1][0], author: quotesList[randomNumber1][1]);
+    quote2 =   Quote(id:"1", text: quotesList[randomNumber2][0], author: quotesList[randomNumber2][1]);
+
+    // Print the quotesList to the CLI
+    print('Quotes List:');
+    quotesList.forEach((quote) {
+      print('${quote[0]} - ${quote[1]}');
+    });
+
+    return quotesList;
+  } else {
+    // If the server returns an error response, throw an exception
+    throw Exception('Failed to load quotes');
   }
 }

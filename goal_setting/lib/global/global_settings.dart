@@ -14,7 +14,7 @@ class GlobalData {
   String _username = "";
   String _password = ""; //TODO
   //Splash
-  int splashTime = 1; //should be 4
+  int splashTime = 4; //should be 4
   //Forgot password
   bool forgotPass = true;
     bool forgotPassEmail = true; // Add email attribute

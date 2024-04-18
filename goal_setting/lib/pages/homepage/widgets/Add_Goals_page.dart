@@ -9,6 +9,7 @@ import '../../../data_classes/sub classes/goal_class.dart';
 import '../../../data_classes/sub classes/progress_class.dart';
 import '../../../data_classes/sub classes/report_class.dart';
 import '../../../data_classes/sub classes/task_class.dart';
+import 'package:http/http.dart' as http;
 
 // Define the SetGoalPage StatefulWidget
 class SetGoalPage extends StatefulWidget {
@@ -26,6 +27,7 @@ class _SetGoalPageState extends State<SetGoalPage> {
   String imageURL = '';
   String goalID = Uuid().v4(); // Generate a UUID for the goal ID
   int remainingDays = 0;
+  bool exists = false;
 
   // Define a list to store tasks
   List<Task> tasks = [];
@@ -44,6 +46,26 @@ class _SetGoalPageState extends State<SetGoalPage> {
 
   // Controller for the task descriptiuon input field
   final _taskDescriptionController = TextEditingController();
+
+
+  // Verify image URL existence
+  Future<bool> _verifyImageURL(String url) async {
+    try {
+      final response = await http.head(Uri.parse(url));
+      if (response.statusCode == 200) {
+        final contentType = response.headers['content-type'];
+        if (contentType != null) {
+          exists = contentType.startsWith('image/');
+          return exists;
+        }
+      }
+      exists = false;
+      return false;
+    } catch (e) {
+      exists = false;
+      return false;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -180,8 +202,8 @@ class _SetGoalPageState extends State<SetGoalPage> {
                                     imageURL = value;
                                     // Verify image URL existence
                                     if (value.isNotEmpty) {
-                                      bool exists = await _verifyImageURL(value);
-                                      if (!exists) {
+                                      exists = await _verifyImageURL(value);
+                                      if (!exists && value.isNotEmpty) {
                                         ScaffoldMessenger.of(context).showSnackBar(
                                           SnackBar(content: Text('Image URL does not exist')),
                                         );
@@ -223,7 +245,12 @@ class _SetGoalPageState extends State<SetGoalPage> {
                               onPressed: () {
                                 if (_formKey.currentState!.validate() && _validateDateInterval()) {
                                   // Show task input form
-                                  _showTaskInputForm();
+                                  exists? _showTaskInputForm() :
+
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(content: Text('Image URL does not exist')),
+                                    );
+
                                 }
                               },
                               child: Text('Add Tasks'),
@@ -416,13 +443,20 @@ class _SetGoalPageState extends State<SetGoalPage> {
                 String taskID = Uuid().v4(); // Generate a UUID for the goal ID
                 if (_taskFormKey.currentState!.validate()) {
                   int days = int.parse(_taskDaysController.text);
-                  DateTime taskEndDate = startDate!.add(Duration(days: days));
+
+
+                  // Calculate the difference in days
+                  int GoalDateCount = targetDate!.difference(startDate!).inDays;
+
+                  DateTime taskStartDate = targetDate!.subtract(Duration(days: remainingDays));
+                  DateTime taskEndDate = targetDate!.subtract(Duration(days: (remainingDays-days)));
+
                   setState(() {
                     tasks.add(Task(
                       goalID: goalID,
                       taskID: taskID, // Generate a new UUID for the task ID
                       name: _taskNamesController.text == ""? 'Task ${tasks.length + 1}' : _taskNamesController.text,
-                      startDate: startDate!,
+                      startDate: taskStartDate!,
                       targetDate: taskEndDate,
                       completed: false,
                       achievements: _taskDescriptionController.text == ""? []:
@@ -470,6 +504,7 @@ class _SetGoalPageState extends State<SetGoalPage> {
                     });
                     goal.printData();
                     Navigator.of(context).pop();
+
                   }
                 }
               },
@@ -510,11 +545,7 @@ class _SetGoalPageState extends State<SetGoalPage> {
   }
 
 
-  // Verify image URL existence
-  Future<bool> _verifyImageURL(String url) async {
-    // Implementation to verify image URL existence
-    return true; // Placeholder return value
-  }
+
 
   // Validate date interval
   bool _validateDateInterval() {
