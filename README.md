@@ -36,7 +36,33 @@ The Goal Setting App helps users set and manage their goals effectively. This Fl
   </tr>
  </table>
 
+<table>
+  <tr>
+     <td> Goal screen</td>
+     <td> Goal screen</td>
+     <td> Set goals screen</td>
+     <td> Set goals screen</td>
+     <td> Validations</td>
+     <td> Task setting screen</td>
+     <td> Set tasks </td>
+  </tr>
+  <tr>
+    <td><img src="https://github.com/Nilupa-Illangarathna/Milestone-Tracker/assets/95247831/3d35c075-228f-4002-960b-4043e8ef2708" width=200></td>
+    <td><img src="https://github.com/Nilupa-Illangarathna/Milestone-Tracker/assets/95247831/522eca19-a573-4ace-a9f0-555e8a47f5cc" width=200></td>
+    <td><img src="https://github.com/Nilupa-Illangarathna/Milestone-Tracker/assets/95247831/5f5687ee-ce0d-414e-a9f0-d6643b62e1a0" width=200></td>
+    <td><img src="https://github.com/Nilupa-Illangarathna/Milestone-Tracker/assets/95247831/b5859af9-8e1e-479e-a340-c1969c215572" width=200></td>
+    <td><img src="https://github.com/Nilupa-Illangarathna/Milestone-Tracker/assets/95247831/23f000b2-6e12-413d-8613-7a8b657bf062" width=200></td>
+    <td><img src="https://github.com/Nilupa-Illangarathna/Milestone-Tracker/assets/95247831/52922800-1801-4ac2-94c3-1637b941f7e7" width=200></td>
+    <td><img src="https://github.com/Nilupa-Illangarathna/Milestone-Tracker/assets/95247831/ca892c27-6851-4393-8547-364c800dbf09" width=200></td>
+  </tr>
+ </table>
 
+
+    <td><img src="" width=200></td>
+
+
+
+    
 
 ## Technologies
 
