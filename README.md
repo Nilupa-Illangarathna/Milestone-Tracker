@@ -29,8 +29,8 @@ The Goal Setting App helps users set and manage their goals effectively. This Fl
     <td><img src="https://github.com/Nilupa-Illangarathna/Milestone-Tracker/assets/95247831/ab0a7480-0cd0-486f-bee2-a55c66f8890f" width=200></td>
     <td><img src="https://github.com/Nilupa-Illangarathna/Milestone-Tracker/assets/95247831/8f8f4e33-f7f1-4de0-825b-27e87b55eb10" width=200></td>
     <td><img src="https://github.com/Nilupa-Illangarathna/wheels-on-demand-vehicle-rental/assets/95247831/39ba7647-5a53-4fef-a90c-b7bc152674a7" width=200></td>
-    <td><img src="https://github.com/Nilupa-Illangarathna/wheels-on-demand-vehicle-rental/assets/95247831/25aa40c1-66fc-45b4-b64a-272f4c4ef604" width=200></td>
     <td><img src="https://github.com/Nilupa-Illangarathna/wheels-on-demand-vehicle-rental/assets/95247831/3cbbc00c-0b78-47f2-9dce-5a5d35c652a1" width=200></td>
+    <td><img src="https://github.com/Nilupa-Illangarathna/wheels-on-demand-vehicle-rental/assets/95247831/25aa40c1-66fc-45b4-b64a-272f4c4ef604" width=200></td>
     <td><img src="https://github.com/Nilupa-Illangarathna/wheels-on-demand-vehicle-rental/assets/95247831/8f89758a-110d-41d6-b49d-f9f1272697c6" width=200></td>
     <td><img src="https://github.com/Nilupa-Illangarathna/wheels-on-demand-vehicle-rental/assets/95247831/70a59ac9-e82d-4d1c-a20a-61cb4481c63f" width=200></td>
   </tr>
