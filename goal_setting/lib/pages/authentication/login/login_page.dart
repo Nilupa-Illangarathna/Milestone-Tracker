@@ -63,6 +63,9 @@ class _LoginPageState extends State<LoginPage> {
           email: response['user']['email'],
           mobile: response['user']['mobile'],
           password: response['user']['password'],
+          FirebaseServiceToken: globalData.FirebaseServiceToken,
+          notificationsOn: false,
+          notificationTime: timeOfDayToString(TimeOfDay.now()),
         );
 
         // userData.printData();

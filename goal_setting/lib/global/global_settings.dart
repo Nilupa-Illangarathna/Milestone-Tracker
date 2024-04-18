@@ -34,6 +34,9 @@ class GlobalData {
   bool enableDrawer = false;
   int homePageViewTransTime = 200; //Between two pages
 
+  // Firebase notifications
+  String FirebaseServiceToken='';
+
   // Constructor
   GlobalData() {
     _loadUserCredentials(); // Load user credentials on object creation

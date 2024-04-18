@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:lottie/lottie.dart';
@@ -17,6 +18,74 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   void initState() {
     super.initState();
+
+    // TODO: Firebase :
+    // Configure foreground notification presentation options
+    FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+      alert: true,
+      badge: true,
+      sound: true,
+    );
+
+    // Handle initial message when the app is opened from terminated state
+    FirebaseMessaging.instance.getInitialMessage().then((RemoteMessage? message) {
+      if (message != null) {
+        Navigator.pushNamed(context, '/message', arguments: MessageArguments(message, true));
+      }
+    });
+
+    // Listen for incoming messages
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      RemoteNotification? notification = message.notification;
+      AndroidNotification? android = message.notification?.android;
+      if (notification != null && android != null) {
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text(notification.title ?? ''),
+            content: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [Text(notification.body ?? '')],
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context, 'OK'),
+                child: Text('OK'),
+              ),
+            ],
+          ),
+        );
+      }
+      if (notification != null && android != null) {
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text(notification.title ?? ''),
+            content: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [Text(notification.body ?? '')],
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context, 'OK'),
+                child: Text('OK'),
+              ),
+            ],
+          ),
+        );
+      }
+    });
+
+    // Handle when a message is opened from the notification
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      Navigator.pushNamed(context, '/message', arguments: MessageArguments(message, true));
+    });
+    //TODO: Firebase :
+
     _controller = AnimationController(
       vsync: this,
       duration: Duration(milliseconds: 1500),
@@ -79,4 +148,12 @@ class _SplashScreenState extends State<SplashScreen>
       ),
     );
   }
+}
+
+
+class MessageArguments {
+  final RemoteMessage message;
+  final bool opened;
+
+  MessageArguments(this.message, this.opened);
 }

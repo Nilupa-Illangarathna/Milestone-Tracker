@@ -18,6 +18,7 @@ import 'data_classes/sub classes/quote_class.dart';
 import 'data_classes/sub classes/report_class.dart';
 import 'data_classes/sub classes/task_class.dart';
 import 'data_classes/sub classes/user_profile_data.dart';
+import 'data_state/dataState.dart';
 
 class RandomDataGenerator {
   static String generateRandomString(int length) {
@@ -94,6 +95,7 @@ class RandomDataGenerator {
     final emails = ['john@example.com', 'nick@example.com', 'nathan@example.com', 'emily@example.com'];
     final mobiles = ['0774567890', '0716543210', '0815555555', '0607777777'];
     final passwords = ['password123', 'securepass', 'mypassword', 'letmein'];
+    final FirebaseServiceTokens = ['0774567890', '0716543210', '0815555555', '0607777777'];
 
     return UserData(
       name: pickRandomItem(names),
@@ -102,6 +104,9 @@ class RandomDataGenerator {
       email: pickRandomItem(emails),
       mobile: pickRandomItem(mobiles),
       password: pickRandomItem(passwords),
+      FirebaseServiceToken: pickRandomItem(FirebaseServiceTokens),
+      notificationsOn: false,
+      notificationTime: timeOfDayToString(TimeOfDay.now()),
     );
   }
 

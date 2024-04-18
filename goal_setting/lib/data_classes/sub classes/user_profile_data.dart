@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
+
 // UserData Class
 class UserData {
   String name;
@@ -8,6 +10,10 @@ class UserData {
   String email;
   String mobile;
   String password;
+  String FirebaseServiceToken;
+  bool notificationsOn;
+  String notificationTime;
+
 
   // Constructor
   UserData({
@@ -17,6 +23,9 @@ class UserData {
     required this.email,
     required this.mobile,
     required this.password,
+    required this.FirebaseServiceToken,
+    required this.notificationsOn,
+    required this.notificationTime,
   });
 
   // Getters and Setters
@@ -45,6 +54,28 @@ class UserData {
   String get getPassword => password;
   set setPassword(String value) => password = value;
 
+  // FirebaseServiceToken
+  String get getFirebaseServiceToken => FirebaseServiceToken;
+  set setFirebaseServiceToken(String value) => FirebaseServiceToken = value;
+
+  // notificationsOn
+  bool get getnotificationsOn => notificationsOn;
+  set setnotificationsOn(bool value) => notificationsOn = value;
+
+  // notificationTime
+  String get getnotificationTime => notificationTime;
+  set setnotificationTime(String value) => notificationTime = value;
+
+
+
+  static Map<String, dynamic> timeOfDayToJson(TimeOfDay timeOfDay) {
+    return {
+      'hour': timeOfDay.hour,
+      'minute': timeOfDay.minute,
+    };
+  }
+
+
   // Serialization Method
   Map<String, dynamic> toJson() {
     return {
@@ -54,8 +85,13 @@ class UserData {
       'email': email,
       'mobile': mobile,
       'password': password,
+      'FirebaseServiceToken': FirebaseServiceToken,
+      'notificationsOn': notificationsOn,
+      'notificationTime': notificationTime,
     };
   }
+
+
 
   // Deserialization Method
   factory UserData.fromJson(Map<String, dynamic> json) {
@@ -66,8 +102,13 @@ class UserData {
       email: json['email'],
       mobile: json['mobile'],
       password: json['password'],
+      FirebaseServiceToken: json['FirebaseServiceToken'],
+      notificationsOn: json['notificationsOn'],
+      notificationTime: json['notificationTime'],
     );
   }
+
+
 
   // Print Method
   void printData() {
@@ -77,6 +118,9 @@ class UserData {
     print('Username: $username');
     print('Email: $email');
     print('Mobile: $mobile');
+    print('FirebaseServiceToken: $FirebaseServiceToken');
+    print('notificationsOn: $notificationsOn');
+    print('notificationTime: $notificationTime');
     // Avoid printing password for security reasons
   }
 }

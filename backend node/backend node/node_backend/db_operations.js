@@ -2,7 +2,8 @@
 const { MongoClient, ObjectId } = require('mongodb');
 
 // Connection URI
-const uri = "mongodb+srv://goal_setting:goal_setting_123@cluster0.77zsq3q.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+const uri = "mongodb+srv://goal_setting:goal_setting_123@cluster0.wxus2z3.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+
 
 // Database Name
 const dbName = 'goal_setting';

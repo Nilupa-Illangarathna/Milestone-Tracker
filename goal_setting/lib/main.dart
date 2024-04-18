@@ -8,11 +8,38 @@ import 'package:goal_setting/pages/homepage/pages/set_new_goals.dart';
 import 'package:goal_setting/pages/homepage/pages/user_home_page.dart';
 import 'data_classes/global_data_class.dart';
 import 'dummy_user_page.dart';
+import 'global/global_settings.dart';
 import 'pages/splash/splash_screen.dart';
 import 'package:provider/provider.dart';
 import 'utils/theme.dart';
+import 'utils/firebase_options.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
-void main() {
+String? _fcmToken; // Variable to store FCM token
+
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+  print("Handling a background message: ${message.messageId}");
+}
+
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  // Register background message handler
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
+  // Get FCM token
+  _fcmToken = await FirebaseMessaging.instance.getToken();
+
+  globalData.FirebaseServiceToken = _fcmToken!;
+  print("FCM Token: $_fcmToken");
+
   runApp(MyApp());
 }
 
@@ -37,7 +64,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: AppTheme.themeData,
       // home: UserHomePage(), // Set SplashScreen as the initial route
-      //    home: SetGoalPage(),
+      // home: SetGoalPage(),
       // initialRoute:'/home',
       initialRoute:'/splash',
       routes: {
@@ -61,76 +88,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-
-// class GlobalDataPage extends StatefulWidget {
-//   @override
-//   _GlobalDataPageState createState() => _GlobalDataPageState();
-// }
-//
-// class _GlobalDataPageState extends State<GlobalDataPage> {
-//   late GlobalData globalData;
-//
-//   @override
-//   void initState() {
-//     super.initState();
-//     globalData = RandomDataGenerator.generateRandomGlobalData();
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('Global Data Page'),
-//       ),
-//       body: Padding(
-//         padding: const EdgeInsets.all(16.0),
-//         child: SingleChildScrollView(
-//           child: Column(
-//             crossAxisAlignment: CrossAxisAlignment.start,
-//             children: [
-//               Text(
-//                 '+------------------ Global Data -------------------+',
-//                 style: TextStyle(fontWeight: FontWeight.bold),
-//               ),
-//               SizedBox(height: 16),
-//               UserDataWidget(userData: globalData.userData),
-//               SizedBox(height: 16),
-//               Text(
-//                 '|        - Goals of 7 days',
-//                 style: TextStyle(fontWeight: FontWeight.bold),
-//               ),
-//               SizedBox(height: 8),
-//               ...globalData.goals7Days.map((goal) => GoalWidget(goal: goal)),
-//               SizedBox(height: 16),
-//               Text(
-//                 '|        - Goals of 21 days',
-//                 style: TextStyle(fontWeight: FontWeight.bold),
-//               ),
-//               SizedBox(height: 8),
-//               ...globalData.goals21Days.map((goal) => GoalWidget(goal: goal)),
-//               SizedBox(height: 16),
-//               Text(
-//                 '|        - Custom Goals',
-//                 style: TextStyle(fontWeight: FontWeight.bold),
-//               ),
-//               SizedBox(height: 8),
-//               ...globalData.customGoals.map((goal) => GoalWidget(goal: goal)),
-//               SizedBox(height: 16),
-//               Text(
-//                 '|        - Quotes',
-//                 style: TextStyle(fontWeight: FontWeight.bold),
-//               ),
-//               SizedBox(height: 8),
-//               ...globalData.quotes.map((quote) => QuoteWidget(quote: quote)),
-//               Text(
-//                 '+--------------------------------------------------+',
-//                 style: TextStyle(fontWeight: FontWeight.bold),
-//               ),
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }

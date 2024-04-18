@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 import '../data_classes/global_data_class.dart';
 import '../data_classes/sub classes/user_profile_data.dart';
 import '../data_instance_creation.dart';
@@ -6,11 +8,20 @@ import 'package:http/http.dart' as http;
 import '../global/api_caller.dart';
 
 
-UserData userDataOBJ = UserData(name: '', age: 0, username: '', email: '', mobile: '', password: '');
+UserData userDataOBJ = UserData(name: '', age: 0, username: '', email: '', mobile: '', password: '', FirebaseServiceToken: '', notificationsOn: false, notificationTime: timeOfDayToString(TimeOfDay(hour: 8, minute: 0)),);
 GlobalData global_user_data_OBJ = generateRandomGlobalData(numberOfDummyGoals:0, userDataOBJ: userDataOBJ);
 
 
+String timeOfDayToString(TimeOfDay time) {
+  return '${time.hour}:${time.minute}';
+}
 
+TimeOfDay stringToTimeOfDay(String timeString) {
+  final parts = timeString.split(':');
+  final hour = int.parse(parts[0]);
+  final minute = int.parse(parts[1]);
+  return TimeOfDay(hour: hour, minute: minute);
+}
 
 Future<GlobalData?> getGlobalData({required UserData userDataOBJ}) async {
   try {

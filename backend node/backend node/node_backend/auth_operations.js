@@ -9,8 +9,8 @@ const port = 3500;
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-const supabaseUrl = 'https://zqjmkicfcolipzkqvslv.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpxam1raWNmY29saXB6a3F2c2x2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDg4NjA2MDYsImV4cCI6MjAyNDQzNjYwNn0.okYMPvmrR8ftOXIyHYIJ2DQ-Tk2ZfVZhHXMM6cBmaVk';
+const supabaseUrl = 'https://jqmrqedgufyvwewpqcfg.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpxbXJxZWRndWZ5dndld3BxY2ZnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTMyODY5NDgsImV4cCI6MjAyODg2Mjk0OH0.z3aOq_fMqXC1GJUvSdvmC-hpZkmbSW26U-qdWU9hJq8';
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 //TODO: Crud functions

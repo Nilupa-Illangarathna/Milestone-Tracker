@@ -38,7 +38,7 @@ class _HomePageState extends State<HomePage> {
           },
           children: [
             UserHomePage(),
-            SetGoalPage(),
+            ToSetGoalPage(),
             ReportPage(),
             SettingsPage(),
           ],

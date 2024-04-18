@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const UserData = require('./data_classes/user_data');
+const { MongoClient, ObjectId } = require('mongodb');
 const { createClient } = require('@supabase/supabase-js');
 const {
     createRecord,
@@ -16,17 +17,285 @@ const {
 } = require('./auth_operations');
 // // index.js
 const { create, read, update, del, executeQuery } = require('./db_operations');
-
-
 const app = express();
 const port = 3500;
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-const supabaseUrl = 'https://zqjmkicfcolipzkqvslv.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpxam1raWNmY29saXB6a3F2c2x2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDg4NjA2MDYsImV4cCI6MjAyNDQzNjYwNn0.okYMPvmrR8ftOXIyHYIJ2DQ-Tk2ZfVZhHXMM6cBmaVk';
+const supabaseUrl = 'https://jqmrqedgufyvwewpqcfg.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpxbXJxZWRndWZ5dndld3BxY2ZnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTMyODY5NDgsImV4cCI6MjAyODg2Mjk0OH0.z3aOq_fMqXC1GJUvSdvmC-hpZkmbSW26U-qdWU9hJq8';
 const supabase = createClient(supabaseUrl, supabaseKey);
+
+const admin = require('firebase-admin');
+const serviceAccount = require('./firebase_service.json');
+
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount)
+});
+
+// Store scheduled notifications and their timers
+const scheduledNotifications = {};
+
+
+function scheduleNotification(time, notificationData, deviceToken) {
+  // Get the current time
+  const currentTime = new Date();
+  const currentHours = currentTime.getHours();// 
+  const currentMinutes = currentTime.getMinutes();
+
+  // Parse the provided time string (e.g., "14:30")
+  const [targetHour, targetMinute] = time.split(':').map(Number);
+
+  // Calculate the time difference until the target time
+  let timeDifference = (targetHour - currentHours) * 60 + (targetMinute - currentMinutes);
+
+  // If the target time has already passed for today, add 24 hours to the time difference
+  if (timeDifference < 0) {
+    timeDifference += 24 * 60;
+  }
+
+  // Convert the time difference to milliseconds
+  const delayMilliseconds = timeDifference * 60 * 1000;
+
+  // Set a timer to execute the function after the delay
+  const timer = setTimeout(() => {
+    // Construct the message with notification data
+    const message = {
+      notification: {
+        title: notificationData.title,
+        body: notificationData.body,
+        // imageUrl: notificationData.imageUrl,
+      },
+      token: deviceToken,
+    };
+
+    // Send the notification
+    admin.messaging().send(message)
+      .then((response) => {
+        console.log('Successfully sent message:', response);
+      })
+      .catch((error) => {
+        console.log('Error sending message:', error);
+      });
+
+    // Remove the timer from the scheduled notifications
+    delete scheduledNotifications[deviceToken];
+  }, delayMilliseconds);
+
+  // Store the timer for cancellation later
+  scheduledNotifications[deviceToken] = timer;
+}
+
+
+
+
+
+
+// // Example usage:
+// const notificationTime1 = '16:18'; // Time in HH:mm format
+// const notificationData1 = {
+//   title: 'Notification Title',
+//   body: 'Notification Body',
+//   icon: 'notification_icon',
+//   imageUrl: 'https://letsenhance.io/static/8f5e523ee6b2479e26ecc91b9c25261e/1015f/MainAfter.jpg',
+// };
+
+
+// // Schedule a notification
+// scheduleNotification(notificationTime1, notificationData1, registrationToken);
+
+
+async function connect() {
+    const uri = "mongodb+srv://goal_setting:goal_setting_123@cluster0.wxus2z3.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+    const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+    const dbName = 'goal_setting';
+    try {
+        await client.connect();
+        console.log("Connected to MongoDB successfully");
+        return client.db(dbName);
+    } catch (error) {
+        console.error("Error connecting to MongoDB:", error);
+        throw error;
+    }
+}
+
+async function getAllUserPassPairs() {
+    try {
+        // Select all UUIDs from the table
+        const { data: allUUIDs, error } = await supabase
+            .from('goalkeepingapp_users_id')
+            .select('username, password');
+
+
+        if (error) {
+            console.error('Error fetching UUIDs:', error.message);
+            throw new Error('An error occurred while fetching UUIDs.');
+        }
+
+        // Extract UUIDs into an array
+        const uuids = allUUIDs;
+
+        return uuids;
+    } catch (error) {
+        console.error('Exception occurred:', error);
+        throw new Error('An error occurred while processing the request.');
+    }
+}
+
+
+
+
+// Function to retrieve all globalData objects
+async function getAllGlobalData() {
+    try {
+        // Connect to MongoDB
+        // Connect to MongoDB
+        const db = await connect();
+        const collection = db.collection('goal_setting');
+
+        // Find all documents in the collection
+        const cursor = collection.find({});
+        const globalDataArray = [];
+
+        // Iterate over the cursor to extract globalData objects
+        await cursor.forEach(doc => {
+            globalDataArray.push(doc.globalData);
+        });
+
+        return globalDataArray;
+    } catch (error) {
+        console.error('Error fetching global data:', error);
+        throw new Error('An error occurred while fetching global data.');
+    }
+}
+
+async function filterGlobalData(userPassPairs, allGlobalData) {
+    const filteredGlobalData = [];
+
+    userPassPairs.forEach(pair => {
+        const { username, password } = pair;
+
+
+        const userDataMatch = allGlobalData.find(data => {
+            return data.userData.username === username &&
+                data.userData.password === password &&
+                data.userData.notificationsOn === true &&
+                (data.goals7Days.length + data.goals21Days.length + data.customGoals.length) > 0;
+        });
+
+        if (userDataMatch) {
+            filteredGlobalData.push(userDataMatch);
+        }
+    });
+
+    return filteredGlobalData;
+}
+
+
+// Function to parse notification time from string to TimeOfDay format
+function parseNotificationTime(notificationTimeStr) {
+    const [hour, minute] = notificationTimeStr.split(':').map(Number);
+    return { hour, minute };
+}
+
+// Function to check if a date is in the future
+function isFutureDate(dateStr) {
+    const targetDate = new Date(dateStr);
+    const currentDate = new Date();
+    return targetDate > currentDate;
+}
+
+// Function to retrieve all user-password pairs and all globalData objects
+async function getAllUserData() {
+    try {
+        const userPassPairs = await getAllUserPassPairs();
+        const allGlobalData = await getAllGlobalData();
+
+        // console.log('All user-password pairs:', userPassPairs);
+        // console.log('All globalData objects:', globalData);
+        // return { userPassPairs, globalData };
+
+        const filteredData = await filterGlobalData(userPassPairs, allGlobalData);
+        console.log('Filtered global data:', filteredData);
+
+        // Iterate through each filtered global data object
+        filteredData.forEach(async (userData) => {
+            // Extract all goals from the userData object
+            const allGoals = [
+                ...userData.goals7Days,
+                ...userData.goals21Days,
+                ...userData.customGoals // Flatten the customGoals array before extracting goals
+            ];
+
+            console.log('All Goals:', allGoals);
+
+            // Convert notification time to TimeOfDay format
+            const notificationTime = parseNotificationTime(userData.userData.notificationTime);
+            console.log('notificationTime:', notificationTime);
+            console.log((notificationTime.hour+":"+notificationTime.minute).toString());
+
+
+        const notificationTimeString = (notificationTime.hour+":"+notificationTime.minute).toString();
+
+            const serviceToken = userData.userData.FirebaseServiceToken;
+
+            // Iterate through each goal
+            allGoals.forEach(goal => {
+                // Check if the target date is in the future
+                if (isFutureDate(goal.targetDate)) {
+
+                    let notification_title = goal.name;
+                    console.log('title: ', notification_title);
+
+                    let bodyOfThe_Notification = "";
+                    // Iterate through each goal
+                    goal.tasks.forEach(task => {
+                        bodyOfThe_Notification += task.name;
+                        bodyOfThe_Notification += "\n";
+                    });
+
+                    console.log('bodyOfThe_Notification: ', bodyOfThe_Notification);
+
+
+
+
+                    // Notification body
+                    const Scheduled_notificationTime = notificationTime; // Time in HH:mm format
+                    const notificationData = {
+                        title: notification_title,
+                        body: bodyOfThe_Notification,
+                    };
+
+
+                    scheduleNotification(notificationTimeString , notificationData, serviceToken);
+
+                }
+            });
+        });
+    } catch (error) {
+        console.error('Error fetching all user data:', error.message);
+        throw new Error('An error occurred while fetching all user data.');
+    }
+}
+
+
+
+getAllUserData();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // Login route
@@ -99,7 +368,7 @@ app.post('/reset_password', async (req, res) => {
 // Function to create or retrieve user UUID based on username and password
 
 
-const ID_table = "goalkeepingapp_users_ids"
+const ID_table = "goalkeepingapp_users_id"
 
 function generateUniqueID() {
     // Generate a random number and convert it to base 36
@@ -112,48 +381,48 @@ function generateUniqueID() {
 }
 
 
-async function getUserUUID(username, password) {
+async function getUserUUID(username, password, FirebaseServiceToken) {
     try {
-      // Check if the user with the provided username and password exists
-      const { data: existingUsers, error } = await supabase
-        .from(ID_table)
-        .select('uuid')
-        .eq('username', username)
-        .eq('password', password);
-  
-      if (error) {
-        console.error('Error checking for existing user:', error.message);
-        return { error: 'Internal server error' };
-      }
-  
-      if (existingUsers && existingUsers.length > 0) {
-        // User already exists, return the UUID
-        return { uuid: existingUsers[0].uuid };
-      } else {
-        // User doesn't exist, generate a unique ID and save it
-        const newUuid = generateUniqueId();
-  
-        // Insert the new user with the generated UUID
-        const { data: newUser, error: insertError } = await supabase
-          .from(ID_table)
-          .insert([{ username, password, uuid: newUuid }]);
-  
-        if (insertError) {
-          console.error('Error inserting new user:', insertError.message);
-          return { error: 'Internal server error' };
+        // Check if the user with the provided username and password exists
+        const { data: existingUsers, error } = await supabase
+            .from(ID_table)
+            .select('uuid')
+            .eq('username', username)
+            .eq('password', password);
+
+        if (error) {
+            console.error('Error checking for existing user:', error.message);
+            return { error: 'Internal server error' };
         }
-  
-        // Return the generated UUID for the new user
-        return { uuid: newUser[0].uuid };
-      }
+
+        if (existingUsers && existingUsers.length > 0) {
+            // User already exists, return the UUID
+            return { uuid: existingUsers[0].uuid };
+        } else {
+            // User doesn't exist, generate a unique ID and save it
+            const newUuid = generateUniqueID();
+
+            // Insert the new user with the generated UUID
+            const { data: newUser, error: insertError } = await supabase
+                .from(ID_table)
+                .insert([{ username, password, uuid: newUuid, firebaseservicetoken: FirebaseServiceToken }]);
+
+            if (insertError) {
+                console.error('Error inserting new user:', insertError.message);
+                return { error: 'Internal server error' };
+            }
+
+            // Return the generated UUID for the new user
+            return { uuid: newUser[0].uuid };
+        }
     } catch (e) {
-      console.error('Exception occurred:', e);
-      return { error: 'Internal server error' };
+        console.error('Exception occurred:', e);
+        return { error: 'Internal server error' };
     }
-  }
-  
+}
+
 // TODO: save data
-  async function saveGlobalData(globalData, uniqueId) {
+async function saveGlobalData(globalData, uniqueId) {
     try {
         // Check if the document with the unique ID exists in MongoDB
         const existingData = await read('goal_setting', { uuid: uniqueId });
@@ -203,11 +472,11 @@ app.post('/update_global_data', async (req, res) => {
 
         await saveGlobalData(globalData, uniqueId);
 
+        console.log("the data is : ", globalData)
+
         // Send response
-        res.json({ success: true, uuid , message: 'Data received successfully.' });
+        res.json({ success: true, uuid, message: 'Data received successfully.' });
     } catch (error) {
-        // Handle any errors here
-        console.error('Error in /update_data:', error);
         res.status(500).json({ success: false, message: 'An error occurred while processing the request.' });
     }
 });
@@ -217,23 +486,22 @@ app.post('/update_global_data', async (req, res) => {
 app.post('/get_global_data', async (req, res) => {
     try {
         // Extract username and password from request body
-        const { username, password } = req.body;
+        const { username, password, FirebaseServiceToken } = req.body;
 
-        const uniqueId = await getUserUUID(username, password);
+        console.log("\n\nFirebaseServiceToken is : ", FirebaseServiceToken, "\n\n");
 
-        const globalDataFromDatabase =  await getGlobalData(uniqueId);
+        const uniqueId = await getUserUUID(username, password, FirebaseServiceToken);
+
+        const globalDataFromDatabase = await getGlobalData(uniqueId);
 
 
         if (globalDataFromDatabase) {
             // Send global data as JSON response
-
-            console.log("Recived data are : ", globalDataFromDatabase);
             res.json({ globalDataFromDatabase });
         } else {
             res.status(404).json({ success: false, message: 'Global data not found for the provided username and password.' });
         }
     } catch (error) {
-        console.error('Error in /global_data:', error);
         res.status(500).json({ success: false, message: 'An error occurred while fetching global data.' });
     }
 });
@@ -244,166 +512,3 @@ app.post('/get_global_data', async (req, res) => {
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// const userData = {
-//     "username": "john_doe",
-//     "age": 35,
-//     "goals": [
-//         {
-//             "name": "Learn MongoDB",
-//             "start_date": "2024-01-01",
-//             "end_date": "2024-06-30",
-//             "tasks": [
-//                 {
-//                     "task_name": "Read MongoDB documentation",
-//                     "priority": "high",
-//                     "status": "incomplete"
-//                 },
-//                 {
-//                     "task_name": "Complete MongoDB course",
-//                     "priority": "medium",
-//                     "status": "complete"
-//                 }
-//             ]
-//         },
-//         {
-//             "name": "Exercise regularly",
-//             "start_date": "2024-03-01",
-//             "end_date": "2024-12-31",
-//             "tasks": [
-//                 {
-//                     "task_name": "Go for a jog",
-//                     "priority": "medium",
-//                     "status": "complete"
-//                 },
-//                 {
-//                     "task_name": "Join a gym",
-//                     "priority": "high",
-//                     "status": "incomplete"
-//                 }
-//             ]
-//         }
-//     ]
-// };
-
-
-
-// const anotherUserData = {
-//     "username": "jane_smith",
-//     "age": 28,
-//     "goals": [
-//         {
-//             "name": "Learn Python",
-//             "start_date": "2024-02-15",
-//             "end_date": "2024-08-31",
-//             "tasks": [
-//                 {
-//                     "task_name": "Complete Python crash course",
-//                     "priority": "high",
-//                     "status": "complete"
-//                 },
-//                 {
-//                     "task_name": "Practice Python coding challenges",
-//                     "priority": "medium",
-//                     "status": "incomplete"
-//                 }
-//             ]
-//         },
-//         {
-//             "name": "Read more books",
-//             "start_date": "2024-01-01",
-//             "end_date": "2024-12-31",
-//             "tasks": [
-//                 {
-//                     "task_name": "Read 'The Great Gatsby'",
-//                     "priority": "medium",
-//                     "status": "complete"
-//                 },
-//                 {
-//                     "task_name": "Read 'To Kill a Mockingbird'",
-//                     "priority": "high",
-//                     "status": "incomplete"
-//                 }
-//             ]
-//         }
-//     ]
-// };
-
-
-
-// // index.js
-// const { create, read, update, del, executeQuery } = require('./db_operations');
-
-
-
-// async function createUserData(userId, userData) {
-//     try {
-//         console.log("\nInserting user data...");
-//         const createdUserData = await create('users', { userId, ...userData });
-//         console.log("Inserted user data:", createdUserData);
-//     } catch (error) {
-//         console.error("Error:", error);
-//     }
-// }
-
-
-
-// async function readUserData(userId) {
-//     try {
-//         console.log("\nReading user data...");
-//         const userData = await read('users', { userId: userId });
-//         console.log("Retrieved user data:", userData);
-//         return userData;
-//     } catch (error) {
-//         console.error("Error:", error);
-//         throw error;
-//     }
-// }
-
-
-// async function updateUserData(userId, newData) {
-//     try {
-//         console.log("\nUpdating user data...");
-//         const updatedData = await update('users', { userId: userId }, { $set: newData });
-//         console.log("Updated user data:", updatedData);
-//     } catch (error) {
-//         console.error("Error:", error);
-//     }
-// }
-
-
-// async function deleteUserData(userId) {
-//     try {
-//         console.log("\nDeleting user data...");
-//         const deletedData = await del('users', { userId: userId });
-//         console.log("Deleted user data:", deletedData);
-//     } catch (error) {
-//         console.error("Error:", error);
-//     }
-// }
-
-
-
-
-
-
-// createUserData(anotherUserData);
-// // readUserData("Nick123!@#");
-// // updateUserData("Nick123!@#", newUserData);
-// // deleteUserData("Nick123!@#");

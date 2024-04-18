@@ -25,6 +25,6 @@ CREATE TABLE goalkeepingapp_users_ids (
     id SERIAL PRIMARY KEY,
     username VARCHAR(255),
     password VARCHAR(255),
-    uuid UUID DEFAULT uuid_generate_v4() NOT NULL
+    uuid text
 );
 

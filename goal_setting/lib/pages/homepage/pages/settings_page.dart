@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../data_state/dataState.dart';
 import '../../../widgets/Charts/chart.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -10,8 +11,8 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  bool notificationsEnabled = false;
-  TimeOfDay selectedTime = TimeOfDay(hour: 8, minute: 0); // Initial time
+  bool notificationsEnabled = global_user_data_OBJ.userData.notificationsOn;
+  TimeOfDay selectedTime = stringToTimeOfDay(global_user_data_OBJ.userData.notificationTime); // Initial time
 
   @override
   Widget build(BuildContext context) {
@@ -115,6 +116,10 @@ class _SettingsPageState extends State<SettingsPage> {
   void _executeFunction() {
     // Execute the function
     print('Function executed');
+    global_user_data_OBJ.userData.notificationsOn = notificationsEnabled;
+    global_user_data_OBJ.userData.notificationTime = timeOfDayToString(selectedTime); // Initial time
+
+    sendGlobalData(globalData: global_user_data_OBJ);
   }
 
   Future<void> _showTimePicker() async {
