@@ -9,6 +9,7 @@ The Goal Setting App helps users set and manage their goals effectively. This Fl
 
 ## Features
 
+
 - **User Authentication**: Users can log in to their accounts securely.
 - **User Profile**: Users can view and edit their profile information.
 - **Goal Management**: Users can create, update, and delete their goals.
